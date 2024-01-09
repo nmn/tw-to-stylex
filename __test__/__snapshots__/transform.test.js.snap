@@ -36,11 +36,11 @@ export function CommandMenu({
     command();
   }, []);
   return <>
-      <Button variant="outline" className={[_styles.$5]} onClick={() => setOpen(true)} {...props}>
-        <span {..._stylex.props(_styles.$6)}>Search documentation...</span>
-        <span {..._stylex.props(_styles.$7)}>Search...</span>
-        <kbd {..._stylex.props(_styles.$8)}>
-          <span {..._stylex.props(_styles.$9)}>⌘</span>K
+      <Button variant="outline" className={[_styles.$1]} onClick={() => setOpen(true)} {...props}>
+        <span {..._stylex.props(_styles.$2)}>Search documentation...</span>
+        <span {..._stylex.props(_styles.$3)}>Search...</span>
+        <kbd {..._stylex.props(_styles.$4)}>
+          <span {..._stylex.props(_styles.$5)}>⌘</span>K
         </kbd>
       </Button>
       <CommandDialog open={open} onOpenChange={setOpen}>
@@ -51,7 +51,7 @@ export function CommandMenu({
             {docsConfig.mainNav.filter(navitem => !navitem.external).map(navItem => <CommandItem key={navItem.href} value={navItem.title} onSelect={() => {
             runCommand(() => router.push((navItem.href as string)));
           }}>
-                  <FileIcon className={_styles.$10} />
+                  <FileIcon className={_styles.$6} />
                   {navItem.title}
                 </CommandItem>)}
           </CommandGroup>
@@ -59,8 +59,8 @@ export function CommandMenu({
               {group.items.map(navItem => <CommandItem key={navItem.href} value={navItem.title} onSelect={() => {
             runCommand(() => router.push((navItem.href as string)));
           }}>
-                  <div {..._stylex.props(_styles.$11)}>
-                    <CircleIcon className={_styles.$12} />
+                  <div {..._stylex.props(_styles.$7)}>
+                    <CircleIcon className={_styles.$8} />
                   </div>
                   {navItem.title}
                 </CommandItem>)}
@@ -68,15 +68,15 @@ export function CommandMenu({
           <CommandSeparator />
           <CommandGroup heading="Theme">
             <CommandItem onSelect={() => runCommand(() => setTheme('light'))}>
-              <SunIcon className={_styles.$10} />
+              <SunIcon className={_styles.$6} />
               Light
             </CommandItem>
             <CommandItem onSelect={() => runCommand(() => setTheme('dark'))}>
-              <MoonIcon className={_styles.$10} />
+              <MoonIcon className={_styles.$6} />
               Dark
             </CommandItem>
             <CommandItem onSelect={() => runCommand(() => setTheme('system'))}>
-              <LaptopIcon className={_styles.$10} />
+              <LaptopIcon className={_styles.$6} />
               System
             </CommandItem>
           </CommandGroup>
@@ -86,38 +86,6 @@ export function CommandMenu({
 }
 const _styles = _stylex.create({
   $1: {
-    display: "flex",
-    backgroundColor: {
-      default: "#10B981",
-      ":hover": "#EF4444"
-    }
-  },
-  $2: {
-    position: "fixed",
-    top: "0",
-    right: "0",
-    bottom: "0",
-    left: "0",
-    zIndex: 50
-  },
-  $3: {
-    position: "fixed",
-    right: "0",
-    left: "0",
-    bottom: "0",
-    zIndex: 50,
-    marginTop: "6rem",
-    height: "96%"
-  },
-  $4: {
-    position: "absolute",
-    top: "0.75rem",
-    left: "50%",
-    borderRadius: "9999px",
-    height: "0.5rem",
-    width: "100px"
-  },
-  $5: {
     position: "relative",
     justifyContent: "flex-start",
     width: {
@@ -134,19 +102,19 @@ const _styles = _stylex.create({
       "@media (min-width: 640px)": "3rem"
     }
   },
-  $6: {
+  $2: {
     display: {
       default: "none",
       "@media (min-width: 1024px)": "inline-flex"
     }
   },
-  $7: {
+  $3: {
     display: {
       default: "inline-flex",
       "@media (min-width: 1024px)": "none"
     }
   },
-  $8: {
+  $4: {
     display: {
       default: "none",
       "@media (min-width: 640px)": "flex"
@@ -168,16 +136,16 @@ const _styles = _stylex.create({
     opacity: 1,
     color: "10px"
   },
-  $9: {
+  $5: {
     fontSize: "0.75rem",
     lineHeight: "1rem"
   },
-  $10: {
+  $6: {
     marginRight: "0.5rem",
     width: "1rem",
     height: "1rem"
   },
-  $11: {
+  $7: {
     display: "flex",
     marginRight: "0.5rem",
     justifyContent: "center",
@@ -185,7 +153,7 @@ const _styles = _stylex.create({
     width: "1rem",
     height: "1rem"
   },
-  $12: {
+  $8: {
     width: "0.75rem",
     height: "0.75rem"
   }
@@ -212,44 +180,44 @@ export default function Component() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div {..._stylex.props(_styles.$13)}>
-          <div {..._stylex.props(_styles.$14)}>
+        <div {..._stylex.props(_styles.$1)}>
+          <div {..._stylex.props(_styles.$2)}>
             <Label htmlFor="sqrtPriceX96">Sqrt Price X96</Label>
             <Input disabled id="sqrtPriceX96" placeholder="Sqrt Price X96" />
           </div>
-          <div {..._stylex.props(_styles.$14)}>
+          <div {..._stylex.props(_styles.$2)}>
             <Label htmlFor="tick">Tick</Label>
             <Input disabled id="tick" placeholder="Tick" />
           </div>
-          <div {..._stylex.props(_styles.$14)}>
+          <div {..._stylex.props(_styles.$2)}>
             <Label htmlFor="observationIndex">Observation Index</Label>
             <Input disabled id="observationIndex" placeholder="Observation Index" />
           </div>
-          <div {..._stylex.props(_styles.$14)}>
+          <div {..._stylex.props(_styles.$2)}>
             <Label htmlFor="observationCardinality">
               Observation Cardinality
             </Label>
             <Input disabled id="observationCardinality" placeholder="Observation Cardinality" />
           </div>
-          <div {..._stylex.props(_styles.$14)}>
+          <div {..._stylex.props(_styles.$2)}>
             <Label htmlFor="observationCardinalityNext">
               Observation Cardinality Next
             </Label>
             <Input disabled id="observationCardinalityNext" placeholder="Observation Cardinality Next" />
           </div>
-          <div {..._stylex.props(_styles.$14)}>
+          <div {..._stylex.props(_styles.$2)}>
             <Label htmlFor="feeProtocol">Fee Protocol</Label>
             <Input disabled id="feeProtocol" placeholder="Fee Protocol" />
           </div>
-          <div {..._stylex.props(_styles.$14)}>
+          <div {..._stylex.props(_styles.$2)}>
             <Label htmlFor="unlocked">Unlocked</Label>
             <Input disabled id="unlocked" placeholder="Unlocked" />
           </div>
         </div>
       </CardContent>
-      <CardFooter className={_styles.$15}>
+      <CardFooter className={_styles.$3}>
         <Button variant="outline">Refresh</Button>
-        <Link className={_styles.$16} href="#">
+        <Link className={_styles.$4} href="#">
           More Details
         </Link>
       </CardFooter>
@@ -257,126 +225,22 @@ export default function Component() {
 }
 const _styles = _stylex.create({
   $1: {
-    display: "flex",
-    backgroundColor: {
-      default: "#10B981",
-      ":hover": "#EF4444"
-    }
-  },
-  $2: {
-    position: "fixed",
-    top: "0",
-    right: "0",
-    bottom: "0",
-    left: "0",
-    zIndex: 50
-  },
-  $3: {
-    position: "fixed",
-    right: "0",
-    left: "0",
-    bottom: "0",
-    zIndex: 50,
-    marginTop: "6rem",
-    height: "96%"
-  },
-  $4: {
-    position: "absolute",
-    top: "0.75rem",
-    left: "50%",
-    borderRadius: "9999px",
-    height: "0.5rem",
-    width: "100px"
-  },
-  $5: {
-    position: "relative",
-    justifyContent: "flex-start",
-    width: {
-      default: {
-        default: "100%",
-        "@media (min-width: 768px)": "10rem"
-      },
-      "@media (min-width: 1024px)": "16rem"
-    },
-    fontSize: "0.875rem",
-    lineHeight: "1.25rem",
-    paddingRight: {
-      default: null,
-      "@media (min-width: 640px)": "3rem"
-    }
-  },
-  $6: {
-    display: {
-      default: "none",
-      "@media (min-width: 1024px)": "inline-flex"
-    }
-  },
-  $7: {
-    display: {
-      default: "inline-flex",
-      "@media (min-width: 1024px)": "none"
-    }
-  },
-  $8: {
-    display: {
-      default: "none",
-      "@media (min-width: 640px)": "flex"
-    },
-    position: "absolute",
-    top: "0.375rem",
-    right: "0.375rem",
-    paddingLeft: "0.375rem",
-    paddingRight: "0.375rem",
-    gap: "0.25rem",
-    alignItems: "center",
-    borderRadius: "0.25rem",
-    borderWidth: "1px",
-    height: "1.25rem",
-    fontFamily: "Menlo, Monaco, Consolas, \\"Liberation Mono\\", \\"Courier New\\", monospace",
-    fontWeight: 500,
-    pointerEvents: "none",
-    userSelect: "none",
-    opacity: 1,
-    color: "10px"
-  },
-  $9: {
-    fontSize: "0.75rem",
-    lineHeight: "1rem"
-  },
-  $10: {
-    marginRight: "0.5rem",
-    width: "1rem",
-    height: "1rem"
-  },
-  $11: {
-    display: "flex",
-    marginRight: "0.5rem",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "1rem",
-    height: "1rem"
-  },
-  $12: {
-    width: "0.75rem",
-    height: "0.75rem"
-  },
-  $13: {
     display: "grid",
     gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
     gap: "1rem",
     fontSize: "0.875rem",
     lineHeight: "1.25rem"
   },
-  $14: {
+  $2: {
     display: "flex",
     marginTop: "0.375rem",
     flexDirection: "column"
   },
-  $15: {
+  $3: {
     display: "flex",
     justifyContent: "space-between"
   },
-  $16: {
+  $4: {
     color: "#3B82F6"
   }
 });"
@@ -393,130 +257,130 @@ import { CardHeader, CardFooter, Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 export default function Component() {
-  return <section {..._stylex.props(_styles.$17)}>
-      <header {..._stylex.props(_styles.$18)}>
-        <Link className={_styles.$19} href="#">
-          <IconMountain className={_styles.$20} />
-          <span {..._stylex.props(_styles.$21)}>Portfolio</span>
+  return <section {..._stylex.props(_styles.$1)}>
+      <header {..._stylex.props(_styles.$2)}>
+        <Link className={_styles.$3} href="#">
+          <IconMountain className={_styles.$4} />
+          <span {..._stylex.props(_styles.$5)}>Portfolio</span>
         </Link>
-        <nav {..._stylex.props(_styles.$22)}>
-          <Link className={_styles.$23} href="#">
+        <nav {..._stylex.props(_styles.$6)}>
+          <Link className={_styles.$7} href="#">
             About
           </Link>
-          <Link className={_styles.$23} href="#">
+          <Link className={_styles.$7} href="#">
             Education
           </Link>
-          <Link className={_styles.$23} href="#">
+          <Link className={_styles.$7} href="#">
             Projects
           </Link>
-          <Link className={_styles.$23} href="#">
+          <Link className={_styles.$7} href="#">
             Contact
           </Link>
         </nav>
       </header>
-      <div {..._stylex.props(_styles.$24)}>
-        <div {..._stylex.props(_styles.$25)}>
-          <h1 {..._stylex.props(_styles.$26)}>
+      <div {..._stylex.props(_styles.$8)}>
+        <div {..._stylex.props(_styles.$9)}>
+          <h1 {..._stylex.props(_styles.$10)}>
             Welcome to My Portfolio
           </h1>
-          <p {..._stylex.props(_styles.$27)}>
+          <p {..._stylex.props(_styles.$11)}>
             A high school student aspiring to innovate and create.
           </p>
-          <Link className={_styles.$28} href="#">
+          <Link className={_styles.$12} href="#">
             Contact Me
           </Link>
         </div>
       </div>
-      <div {..._stylex.props(_styles.$29)} id="about">
-        <h2 {..._stylex.props(_styles.$30)}>
+      <div {..._stylex.props(_styles.$13)} id="about">
+        <h2 {..._stylex.props(_styles.$14)}>
           About Me
         </h2>
-        <p {..._stylex.props(_styles.$27)}>
+        <p {..._stylex.props(_styles.$11)}>
           I am a high school student passionate about technology and problem
           solving. I enjoy coding, robotics, and exploring new technologies.
         </p>
       </div>
-      <div {..._stylex.props(_styles.$29)} id="education">
-        <h2 {..._stylex.props(_styles.$30)}>
+      <div {..._stylex.props(_styles.$13)} id="education">
+        <h2 {..._stylex.props(_styles.$14)}>
           Education
         </h2>
-        <p {..._stylex.props(_styles.$27)}>
+        <p {..._stylex.props(_styles.$11)}>
           I am currently attending XYZ High School with an expected graduation
           year of 2025.
         </p>
       </div>
-      <div {..._stylex.props(_styles.$31)} id="projects">
+      <div {..._stylex.props(_styles.$15)} id="projects">
         <Card>
           <CardHeader>
-            <h3 {..._stylex.props(_styles.$32)}>Project 1</h3>
+            <h3 {..._stylex.props(_styles.$16)}>Project 1</h3>
           </CardHeader>
           <div>
-            <p {..._stylex.props(_styles.$33)}>
+            <p {..._stylex.props(_styles.$17)}>
               This is a brief description of my project. It includes details
               about the technologies I used and the problems I solved.
             </p>
           </div>
           <CardFooter>
-            <Link className={_styles.$23} href="#">
+            <Link className={_styles.$7} href="#">
               View Project
             </Link>
           </CardFooter>
         </Card>
         <Card>
           <CardHeader>
-            <h3 {..._stylex.props(_styles.$32)}>Project 2</h3>
+            <h3 {..._stylex.props(_styles.$16)}>Project 2</h3>
           </CardHeader>
           <div>
-            <p {..._stylex.props(_styles.$33)}>
+            <p {..._stylex.props(_styles.$17)}>
               This is a brief description of my project. It includes details
               about the technologies I used and the problems I solved.
             </p>
           </div>
           <CardFooter>
-            <Link className={_styles.$23} href="#">
+            <Link className={_styles.$7} href="#">
               View Project
             </Link>
           </CardFooter>
         </Card>
         <Card>
           <CardHeader>
-            <h3 {..._stylex.props(_styles.$32)}>Project 3</h3>
+            <h3 {..._stylex.props(_styles.$16)}>Project 3</h3>
           </CardHeader>
           <div>
-            <p {..._stylex.props(_styles.$33)}>
+            <p {..._stylex.props(_styles.$17)}>
               This is a brief description of my project. It includes details
               about the technologies I used and the problems I solved.
             </p>
           </div>
           <CardFooter>
-            <Link className={_styles.$23} href="#">
+            <Link className={_styles.$7} href="#">
               View Project
             </Link>
           </CardFooter>
         </Card>
       </div>
-      <div {..._stylex.props(_styles.$29)} id="contact">
-        <h2 {..._stylex.props(_styles.$30)}>
+      <div {..._stylex.props(_styles.$13)} id="contact">
+        <h2 {..._stylex.props(_styles.$14)}>
           Contact Me
         </h2>
-        <form {..._stylex.props(_styles.$34)}>
-          <div {..._stylex.props(_styles.$35)}>
-            <div {..._stylex.props(_styles.$36)}>
-              <label {..._stylex.props(_styles.$37)} htmlFor="grid-first-name">
+        <form {..._stylex.props(_styles.$18)}>
+          <div {..._stylex.props(_styles.$19)}>
+            <div {..._stylex.props(_styles.$20)}>
+              <label {..._stylex.props(_styles.$21)} htmlFor="grid-first-name">
                 Name
               </label>
               <Input id="grid-first-name" placeholder="Name" type="text" />
             </div>
-            <div {..._stylex.props(_styles.$38)}>
-              <label {..._stylex.props(_styles.$37)} htmlFor="grid-last-name">
+            <div {..._stylex.props(_styles.$22)}>
+              <label {..._stylex.props(_styles.$21)} htmlFor="grid-last-name">
                 Email
               </label>
               <Input id="grid-last-name" placeholder="Email" type="email" />
             </div>
           </div>
-          <div {..._stylex.props(_styles.$35)}>
-            <div {..._stylex.props(_styles.$39)}>
-              <label {..._stylex.props(_styles.$37)} htmlFor="grid-password">
+          <div {..._stylex.props(_styles.$19)}>
+            <div {..._stylex.props(_styles.$23)}>
+              <label {..._stylex.props(_styles.$21)} htmlFor="grid-password">
                 Message
               </label>
               <Input id="grid-password" placeholder="Your message" type="text" />
@@ -534,134 +398,11 @@ function IconMountain(props) {
 }
 const _styles = _stylex.create({
   $1: {
-    display: "flex",
-    backgroundColor: {
-      default: "#10B981",
-      ":hover": "#EF4444"
-    }
-  },
-  $2: {
-    position: "fixed",
-    top: "0",
-    right: "0",
-    bottom: "0",
-    left: "0",
-    zIndex: 50
-  },
-  $3: {
-    position: "fixed",
-    right: "0",
-    left: "0",
-    bottom: "0",
-    zIndex: 50,
-    marginTop: "6rem",
-    height: "96%"
-  },
-  $4: {
-    position: "absolute",
-    top: "0.75rem",
-    left: "50%",
-    borderRadius: "9999px",
-    height: "0.5rem",
-    width: "100px"
-  },
-  $5: {
-    position: "relative",
-    justifyContent: "flex-start",
-    width: {
-      default: {
-        default: "100%",
-        "@media (min-width: 768px)": "10rem"
-      },
-      "@media (min-width: 1024px)": "16rem"
-    },
-    fontSize: "0.875rem",
-    lineHeight: "1.25rem",
-    paddingRight: {
-      default: null,
-      "@media (min-width: 640px)": "3rem"
-    }
-  },
-  $6: {
-    display: {
-      default: "none",
-      "@media (min-width: 1024px)": "inline-flex"
-    }
-  },
-  $7: {
-    display: {
-      default: "inline-flex",
-      "@media (min-width: 1024px)": "none"
-    }
-  },
-  $8: {
-    display: {
-      default: "none",
-      "@media (min-width: 640px)": "flex"
-    },
-    position: "absolute",
-    top: "0.375rem",
-    right: "0.375rem",
-    paddingLeft: "0.375rem",
-    paddingRight: "0.375rem",
-    gap: "0.25rem",
-    alignItems: "center",
-    borderRadius: "0.25rem",
-    borderWidth: "1px",
-    height: "1.25rem",
-    fontFamily: "Menlo, Monaco, Consolas, \\"Liberation Mono\\", \\"Courier New\\", monospace",
-    fontWeight: 500,
-    pointerEvents: "none",
-    userSelect: "none",
-    opacity: 1,
-    color: "10px"
-  },
-  $9: {
-    fontSize: "0.75rem",
-    lineHeight: "1rem"
-  },
-  $10: {
-    marginRight: "0.5rem",
-    width: "1rem",
-    height: "1rem"
-  },
-  $11: {
-    display: "flex",
-    marginRight: "0.5rem",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "1rem",
-    height: "1rem"
-  },
-  $12: {
-    width: "0.75rem",
-    height: "0.75rem"
-  },
-  $13: {
-    display: "grid",
-    gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-    gap: "1rem",
-    fontSize: "0.875rem",
-    lineHeight: "1.25rem"
-  },
-  $14: {
-    display: "flex",
-    marginTop: "0.375rem",
-    flexDirection: "column"
-  },
-  $15: {
-    display: "flex",
-    justifyContent: "space-between"
-  },
-  $16: {
-    color: "#3B82F6"
-  },
-  $17: {
     paddingTop: "3rem",
     paddingBottom: "3rem",
     width: "100%"
   },
-  $18: {
+  $2: {
     display: "flex",
     paddingLeft: {
       default: "1rem",
@@ -674,16 +415,16 @@ const _styles = _stylex.create({
     alignItems: "center",
     height: "3.5rem"
   },
-  $19: {
+  $3: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center"
   },
-  $20: {
+  $4: {
     width: "1.5rem",
     height: "1.5rem"
   },
-  $21: {
+  $5: {
     position: "absolute",
     width: "1px",
     height: "1px",
@@ -694,14 +435,14 @@ const _styles = _stylex.create({
     whiteSpace: "nowrap",
     borderWidth: "0"
   },
-  $22: {
+  $6: {
     display: "flex",
     gap: {
       default: "1rem",
       "@media (min-width: 640px)": "1.5rem"
     }
   },
-  $23: {
+  $7: {
     fontSize: "0.875rem",
     lineHeight: "1.25rem",
     fontWeight: 500,
@@ -711,7 +452,7 @@ const _styles = _stylex.create({
       ":hover": "underline"
     }
   },
-  $24: {
+  $8: {
     width: "100%",
     paddingLeft: {
       default: "1rem",
@@ -722,13 +463,13 @@ const _styles = _stylex.create({
       "@media (min-width: 768px)": "1.5rem"
     }
   },
-  $25: {
+  $9: {
     display: "flex",
     marginTop: "1rem",
     flexDirection: "column",
     justifyContent: "center"
   },
-  $26: {
+  $10: {
     fontSize: {
       default: "1.875rem",
       "@media (min-width: 640px)": "3rem"
@@ -740,7 +481,7 @@ const _styles = _stylex.create({
     fontWeight: 700,
     letterSpacing: "-0.05em"
   },
-  $27: {
+  $11: {
     color: "#6B7280",
     maxWidth: "600px",
     fontSize: {
@@ -752,7 +493,7 @@ const _styles = _stylex.create({
       "@media (min-width: 768px)": "1.75rem"
     }
   },
-  $28: {
+  $12: {
     display: "inline-flex",
     paddingLeft: "2rem",
     paddingRight: "2rem",
@@ -770,7 +511,7 @@ const _styles = _stylex.create({
     transitionDuration: "300ms",
     boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)"
   },
-  $29: {
+  $13: {
     width: "100%",
     paddingLeft: {
       default: "1rem",
@@ -783,7 +524,7 @@ const _styles = _stylex.create({
     paddingTop: "3rem",
     paddingBottom: "3rem"
   },
-  $30: {
+  $14: {
     fontSize: {
       default: "1.875rem",
       "@media (min-width: 640px)": "2.25rem"
@@ -795,7 +536,7 @@ const _styles = _stylex.create({
     fontWeight: 700,
     letterSpacing: "-0.05em"
   },
-  $31: {
+  $15: {
     width: "100%",
     display: "grid",
     paddingLeft: {
@@ -817,29 +558,29 @@ const _styles = _stylex.create({
       "@media (min-width: 768px)": "repeat(3, minmax(0, 1fr))"
     }
   },
-  $32: {
+  $16: {
     fontSize: "1.125rem",
     lineHeight: "1.75rem",
     fontWeight: 700
   },
-  $33: {
+  $17: {
     fontSize: "0.875rem",
     lineHeight: "1.25rem",
     color: "#6B7280"
   },
-  $34: {
+  $18: {
     marginTop: "1.5rem",
     width: "100%",
     maxWidth: "32rem"
   },
-  $35: {
+  $19: {
     display: "flex",
     marginBottom: "1.5rem",
     marginLeft: "-0.75rem",
     marginRight: "-0.75rem",
     flexWrap: "wrap"
   },
-  $36: {
+  $20: {
     paddingLeft: "0.75rem",
     paddingRight: "0.75rem",
     marginBottom: {
@@ -851,7 +592,7 @@ const _styles = _stylex.create({
       "@media (min-width: 768px)": "50%"
     }
   },
-  $37: {
+  $21: {
     display: "block",
     marginBottom: "0.5rem",
     fontSize: "0.75rem",
@@ -861,7 +602,7 @@ const _styles = _stylex.create({
     color: "#374151",
     textTransform: "uppercase"
   },
-  $38: {
+  $22: {
     paddingLeft: "0.75rem",
     paddingRight: "0.75rem",
     width: {
@@ -869,7 +610,7 @@ const _styles = _stylex.create({
       "@media (min-width: 768px)": "50%"
     }
   },
-  $39: {
+  $23: {
     paddingLeft: "0.75rem",
     paddingRight: "0.75rem",
     width: "100%"
@@ -900,163 +641,22 @@ export function ThemeToggle() {
     theme
   } = useTheme();
   return <Button variant="ghost" size="icon" onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
-      <Sun className={_styles.$40} />
-      <Moon className={_styles.$41} />
-      <span {..._stylex.props(_styles.$21)}>Toggle theme</span>
+      <Sun className={_styles.$1} />
+      <Moon className={_styles.$2} />
+      <span {..._stylex.props(_styles.$3)}>Toggle theme</span>
     </Button>;
 }
 const _styles = _stylex.create({
   $1: {
-    display: "flex",
-    backgroundColor: {
-      default: "#10B981",
-      ":hover": "#EF4444"
-    }
+    height: "1.5rem",
+    width: "1.3rem"
   },
   $2: {
-    position: "fixed",
-    top: "0",
-    right: "0",
-    bottom: "0",
-    left: "0",
-    zIndex: 50
+    display: "none",
+    width: "1.25rem",
+    height: "1.25rem"
   },
   $3: {
-    position: "fixed",
-    right: "0",
-    left: "0",
-    bottom: "0",
-    zIndex: 50,
-    marginTop: "6rem",
-    height: "96%"
-  },
-  $4: {
-    position: "absolute",
-    top: "0.75rem",
-    left: "50%",
-    borderRadius: "9999px",
-    height: "0.5rem",
-    width: "100px"
-  },
-  $5: {
-    position: "relative",
-    justifyContent: "flex-start",
-    width: {
-      default: {
-        default: "100%",
-        "@media (min-width: 768px)": "10rem"
-      },
-      "@media (min-width: 1024px)": "16rem"
-    },
-    fontSize: "0.875rem",
-    lineHeight: "1.25rem",
-    paddingRight: {
-      default: null,
-      "@media (min-width: 640px)": "3rem"
-    }
-  },
-  $6: {
-    display: {
-      default: "none",
-      "@media (min-width: 1024px)": "inline-flex"
-    }
-  },
-  $7: {
-    display: {
-      default: "inline-flex",
-      "@media (min-width: 1024px)": "none"
-    }
-  },
-  $8: {
-    display: {
-      default: "none",
-      "@media (min-width: 640px)": "flex"
-    },
-    position: "absolute",
-    top: "0.375rem",
-    right: "0.375rem",
-    paddingLeft: "0.375rem",
-    paddingRight: "0.375rem",
-    gap: "0.25rem",
-    alignItems: "center",
-    borderRadius: "0.25rem",
-    borderWidth: "1px",
-    height: "1.25rem",
-    fontFamily: "Menlo, Monaco, Consolas, \\"Liberation Mono\\", \\"Courier New\\", monospace",
-    fontWeight: 500,
-    pointerEvents: "none",
-    userSelect: "none",
-    opacity: 1,
-    color: "10px"
-  },
-  $9: {
-    fontSize: "0.75rem",
-    lineHeight: "1rem"
-  },
-  $10: {
-    marginRight: "0.5rem",
-    width: "1rem",
-    height: "1rem"
-  },
-  $11: {
-    display: "flex",
-    marginRight: "0.5rem",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "1rem",
-    height: "1rem"
-  },
-  $12: {
-    width: "0.75rem",
-    height: "0.75rem"
-  },
-  $13: {
-    display: "grid",
-    gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-    gap: "1rem",
-    fontSize: "0.875rem",
-    lineHeight: "1.25rem"
-  },
-  $14: {
-    display: "flex",
-    marginTop: "0.375rem",
-    flexDirection: "column"
-  },
-  $15: {
-    display: "flex",
-    justifyContent: "space-between"
-  },
-  $16: {
-    color: "#3B82F6"
-  },
-  $17: {
-    paddingTop: "3rem",
-    paddingBottom: "3rem",
-    width: "100%"
-  },
-  $18: {
-    display: "flex",
-    paddingLeft: {
-      default: "1rem",
-      "@media (min-width: 1024px)": "1.5rem"
-    },
-    paddingRight: {
-      default: "1rem",
-      "@media (min-width: 1024px)": "1.5rem"
-    },
-    alignItems: "center",
-    height: "3.5rem"
-  },
-  $19: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  $20: {
-    width: "1.5rem",
-    height: "1.5rem"
-  },
-  $21: {
     position: "absolute",
     width: "1px",
     height: "1px",
@@ -1066,195 +666,21 @@ const _styles = _stylex.create({
     clip: "rect(0, 0, 0, 0)",
     whiteSpace: "nowrap",
     borderWidth: "0"
-  },
-  $22: {
-    display: "flex",
-    gap: {
-      default: "1rem",
-      "@media (min-width: 640px)": "1.5rem"
-    }
-  },
-  $23: {
-    fontSize: "0.875rem",
-    lineHeight: "1.25rem",
-    fontWeight: 500,
-    textUnderlineOffset: "4px",
-    textDecoration: {
-      default: null,
-      ":hover": "underline"
-    }
-  },
-  $24: {
-    width: "100%",
-    paddingLeft: {
-      default: "1rem",
-      "@media (min-width: 768px)": "1.5rem"
-    },
-    paddingRight: {
-      default: "1rem",
-      "@media (min-width: 768px)": "1.5rem"
-    }
-  },
-  $25: {
-    display: "flex",
-    marginTop: "1rem",
-    flexDirection: "column",
-    justifyContent: "center"
-  },
-  $26: {
-    fontSize: {
-      default: "1.875rem",
-      "@media (min-width: 640px)": "3rem"
-    },
-    lineHeight: {
-      default: "2.25rem",
-      "@media (min-width: 640px)": 1
-    },
-    fontWeight: 700,
-    letterSpacing: "-0.05em"
-  },
-  $27: {
-    color: "#6B7280",
-    maxWidth: "600px",
-    fontSize: {
-      default: null,
-      "@media (min-width: 768px)": "1.25rem"
-    },
-    lineHeight: {
-      default: null,
-      "@media (min-width: 768px)": "1.75rem"
-    }
-  },
-  $28: {
-    display: "inline-flex",
-    paddingLeft: "2rem",
-    paddingRight: "2rem",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: "0.375rem",
-    height: "2.5rem",
-    fontSize: "0.875rem",
-    lineHeight: "1.25rem",
-    fontWeight: 500,
-    color: "#F9FAFB",
-    backgroundColor: "#111827",
-    transitionProperty: "color, background-color, border-color, text-decoration-color, fill, stroke",
-    transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
-    transitionDuration: "300ms",
-    boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)"
-  },
-  $29: {
-    width: "100%",
-    paddingLeft: {
-      default: "1rem",
-      "@media (min-width: 768px)": "1.5rem"
-    },
-    paddingRight: {
-      default: "1rem",
-      "@media (min-width: 768px)": "1.5rem"
-    },
-    paddingTop: "3rem",
-    paddingBottom: "3rem"
-  },
-  $30: {
-    fontSize: {
-      default: "1.875rem",
-      "@media (min-width: 640px)": "2.25rem"
-    },
-    lineHeight: {
-      default: "2.25rem",
-      "@media (min-width: 640px)": "2.5rem"
-    },
-    fontWeight: 700,
-    letterSpacing: "-0.05em"
-  },
-  $31: {
-    width: "100%",
-    display: "grid",
-    paddingLeft: {
-      default: "1rem",
-      "@media (min-width: 768px)": "1.5rem"
-    },
-    paddingRight: {
-      default: "1rem",
-      "@media (min-width: 768px)": "1.5rem"
-    },
-    paddingTop: "3rem",
-    paddingBottom: "3rem",
-    gap: "1.5rem",
-    gridTemplateColumns: {
-      default: {
-        default: null,
-        "@media (min-width: 640px)": "repeat(2, minmax(0, 1fr))"
-      },
-      "@media (min-width: 768px)": "repeat(3, minmax(0, 1fr))"
-    }
-  },
-  $32: {
-    fontSize: "1.125rem",
-    lineHeight: "1.75rem",
-    fontWeight: 700
-  },
-  $33: {
-    fontSize: "0.875rem",
-    lineHeight: "1.25rem",
-    color: "#6B7280"
-  },
-  $34: {
-    marginTop: "1.5rem",
-    width: "100%",
-    maxWidth: "32rem"
-  },
-  $35: {
-    display: "flex",
-    marginBottom: "1.5rem",
-    marginLeft: "-0.75rem",
-    marginRight: "-0.75rem",
-    flexWrap: "wrap"
-  },
-  $36: {
-    paddingLeft: "0.75rem",
-    paddingRight: "0.75rem",
-    marginBottom: {
-      default: "1.5rem",
-      "@media (min-width: 768px)": "0"
-    },
-    width: {
-      default: "100%",
-      "@media (min-width: 768px)": "50%"
-    }
-  },
-  $37: {
-    display: "block",
-    marginBottom: "0.5rem",
-    fontSize: "0.75rem",
-    lineHeight: "1rem",
-    fontWeight: 700,
-    letterSpacing: "0.025em",
-    color: "#374151",
-    textTransform: "uppercase"
-  },
-  $38: {
-    paddingLeft: "0.75rem",
-    paddingRight: "0.75rem",
-    width: {
-      default: "100%",
-      "@media (min-width: 768px)": "50%"
-    }
-  },
-  $39: {
-    paddingLeft: "0.75rem",
-    paddingRight: "0.75rem",
-    width: "100%"
-  },
-  $40: {
-    height: "1.5rem",
-    width: "1.3rem"
-  },
-  $41: {
-    display: "none",
-    width: "1.25rem",
-    height: "1.25rem"
   }
 });"
+`;
+
+exports[`tailwind-to-stylex transforms variable-are-left-alone.js 1`] = `
+"import * as _stylex from "@stylexjs/stylex";
+import * as stylex from "@stylexjs/stylex";
+export const colors = stylex.defineVars({
+  darkBlue: "#006ce9",
+  lightBlue: "#18b6f6",
+  lightPurple: "#ac7ff4",
+  darkPurple: "#713fc2",
+  dirtyBlack: "#1d2033",
+  darkBackground: "#151934",
+  darkText: "#ffffff"
+});
+const _styles = _stylex.create({});"
 `;

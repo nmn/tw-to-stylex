@@ -7,22 +7,22 @@
  * @flow strict
  */
 
-'use strict';
+"use strict";
 
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 
 jest.autoMockOff();
 
-import tailwindToStylex from '../src/index';
+import tailwindToStylex from "../src/index";
 
-const fixturesPath = path.join(__dirname, '__fixtures__');
+const fixturesPath = path.join(__dirname, "__fixtures__");
 const fixtures = fs.readdirSync(fixturesPath).map((fixture) => {
-  return [fixture, fs.readFileSync(path.join(fixturesPath, fixture), 'utf-8')];
+  return [fixture, fs.readFileSync(path.join(fixturesPath, fixture), "utf-8")];
 });
 
-describe('tailwind-to-stylex', () => {
-  test('transforms simple example', async () => {
+describe("tailwind-to-stylex", () => {
+  test("transforms simple example", async () => {
     const input = `
     function Component() {
       return <div className="flex bg-green-500 hover:bg-red-500 other" />
@@ -47,7 +47,7 @@ describe('tailwind-to-stylex', () => {
     `);
   });
 
-  test('transforms tailwind being used and merged on custom components', async () => {
+  test("transforms tailwind being used and merged on custom components", async () => {
     const input = `
       const DrawerContent = ({ className, children, ...props }) => (
         <DrawerPrimitive.Portal>
@@ -68,52 +68,45 @@ describe('tailwind-to-stylex', () => {
     `;
     const result = await tailwindToStylex(input);
     expect(result).toMatchInlineSnapshot(`
-      "import * as _stylex from "@stylexjs/stylex";
-      const DrawerContent = ({
-        className,
-        children,
-        ...props
-      }) => <DrawerPrimitive.Portal>
-                <DrawerPrimitive.Overlay className={_styles.$2} />
-                <DrawerPrimitive.Content ref={ref} className={[_styles.$3, className]} {...props}>
-                  <div {..._stylex.props(_styles.$4)} />
-                  {children}
-                </DrawerPrimitive.Content>
-              </DrawerPrimitive.Portal>;
-      const _styles = _stylex.create({
-        $1: {
-          display: "flex",
-          backgroundColor: {
-            default: "#10B981",
-            ":hover": "#EF4444"
-          }
-        },
-        $2: {
-          position: "fixed",
-          top: "0",
-          right: "0",
-          bottom: "0",
-          left: "0",
-          zIndex: 50
-        },
-        $3: {
-          position: "fixed",
-          right: "0",
-          left: "0",
-          bottom: "0",
-          zIndex: 50,
-          marginTop: "6rem",
-          height: "96%"
-        },
-        $4: {
-          position: "absolute",
-          top: "0.75rem",
-          left: "50%",
-          borderRadius: "9999px",
-          height: "0.5rem",
-          width: "100px"
-        }
-      });"
+     "import * as _stylex from "@stylexjs/stylex";
+     const DrawerContent = ({
+       className,
+       children,
+       ...props
+     }) => <DrawerPrimitive.Portal>
+               <DrawerPrimitive.Overlay className={_styles.$1} />
+               <DrawerPrimitive.Content ref={ref} className={[_styles.$2, className]} {...props}>
+                 <div {..._stylex.props(_styles.$3)} />
+                 {children}
+               </DrawerPrimitive.Content>
+             </DrawerPrimitive.Portal>;
+     const _styles = _stylex.create({
+       $1: {
+         position: "fixed",
+         top: "0",
+         right: "0",
+         bottom: "0",
+         left: "0",
+         zIndex: 50
+       },
+       $2: {
+         position: "fixed",
+         right: "0",
+         left: "0",
+         bottom: "0",
+         zIndex: 50,
+         marginTop: "6rem",
+         height: "96%"
+       },
+       $3: {
+         position: "absolute",
+         top: "0.75rem",
+         left: "50%",
+         borderRadius: "9999px",
+         height: "0.5rem",
+         width: "100px"
+       }
+     });"
     `);
   });
 
