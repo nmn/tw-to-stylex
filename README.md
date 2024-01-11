@@ -10,3 +10,6 @@ A simpler code translator to convert code using Tailwind to code using StyleX
 - [ ] There might multiple stylex imports, but it should be fine.
 - [ ] It'll insert a second `stylex.create` call even when one exists
 - [ ] Support this pattern: `<div className={cn(`hidden lg:inline-flex text-[${tokens.textColor}]`)} />`
+- [ ] Add and use a custom `tw` function to behave like `stylex.atom()`.
+
+- [ ] A Babel plugin for `style:x={}` instead of a spread

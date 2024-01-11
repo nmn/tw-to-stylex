@@ -163,7 +163,7 @@ const customBabelPlugin = (): PluginObj<> => {
           name.name[0].toLocaleLowerCase() === name.name[0];
 
         const node = path.node;
-        if (node.name.name !== "className") {
+        if (node.name.name !== "className" && node.name.name !== "class") {
           return;
         }
         let valuePath = path.get("value");
