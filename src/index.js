@@ -119,6 +119,52 @@ const customBabelPlugin = (): PluginObj<> => {
   let stylex: t.Identifier;
   let styles: t.Identifier;
 
+  const pathToStyleX = (arg: NodePath<t.Expression>): t.Expression | null => {
+    const node: t.Expression = arg.node;
+    let expressionMap: {[string]: mixed} = {};
+    let input: string;
+    if (pathUtils.isStringLiteral(arg)) {
+      input = arg.node.value;
+    } else if (pathUtils.isTemplateLiteral(arg)) {
+      let val = 0;
+      const replacedExpressions = arg.node.expressions.map((e) => {
+        const key = `$${++val}`;
+        expressionMap[key] = e;
+        return key;
+      });
+      // join the strings and expressions
+      input = arg.node.quasis
+        .map((q, i) => q.value.raw + (replacedExpressions[i] || ""))
+        .join("");
+    } else {
+      return node;
+    }
+
+    let keyName;
+    if (input != null && cnMap[input]) {
+      keyName = cnMap[input];
+    } else {
+      const styleObject = convertTwToJs(input);
+      if (styleObject == null) {
+        return null;
+      }
+      // Put replace IDs with expressions using expressionMap.
+      for (const key of Object.keys(styleObject)) {
+        const value = styleObject[key];
+        // $FlowFixMe
+        if (expressionMap[value]) {
+          // $FlowFixMe
+          styleObject[key] = expressionMap[value];
+        }
+      }
+
+      keyName = `$${++count}`;
+      styleMap[keyName] = styleObject;
+      cnMap[input] = keyName;
+    }
+    return t.memberExpression(styles, t.identifier(keyName));
+  };
+
   return {
     name: "tailwind-to-stylex",
     visitor: {
@@ -131,22 +177,24 @@ const customBabelPlugin = (): PluginObj<> => {
           stylex = path.scope.generateUidIdentifier("stylex");
           styles = path.scope.generateUidIdentifier("styles");
 
-          const firstStatement: Array<NodePath<t.Statement>> = path.get("body");
-          const firstStatementNode = firstStatement[0];
-          firstStatementNode.insertBefore(
+          
+        },
+        exit: (path: NodePath<t.Program>) => {
+          if (Object.keys(styleMap).length === 0) {
+            return;
+          }
+
+          const statments: Array<NodePath<t.Statement>> = path.get("body");
+          
+          const firstStatement = statments[0];
+          const lastStatement = statments[statments.length - 1];
+
+          firstStatement.insertBefore(
             t.importDeclaration(
               [t.importNamespaceSpecifier(stylex)],
               t.stringLiteral("@stylexjs/stylex")
             )
           );
-        },
-        exit: (path: NodePath<t.Program>) => {
-          const statments: Array<NodePath<t.Statement>> = path.get("body");
-          const lastStatement = statments[statments.length - 1];
-
-          if (Object.keys(styleMap).length === 0) {
-            return;
-          }
 
           lastStatement.insertAfter(
             t.variableDeclaration("const", [
@@ -180,53 +228,9 @@ const customBabelPlugin = (): PluginObj<> => {
           valuePath = valuePath.get("expression");
         }
 
-        if (isCnOrTwMergeCall(valuePath)) {
+        if (isCallExpressionNamed(valuePath, ['cn', 'twMerge'])) {
           const callExpression: NodePath<t.CallExpression> = valuePath;
-          const transformedArgs = callExpression.get('arguments').map((arg: NodePath<t.Expression>): t.Expression | null => {
-            const node: t.Expression = arg.node;
-            let expressionMap: {[string]: mixed} = {};
-            let input: string;
-            if (pathUtils.isStringLiteral(arg)) {
-              input = arg.node.value;
-            } else if (pathUtils.isTemplateLiteral(arg)) {
-              let val = 0;
-              const replacedExpressions = arg.node.expressions.map((e) => {
-                const key = `$${++val}`;
-                expressionMap[key] = e;
-                return key;
-              });
-              // join the strings and expressions
-              input = arg.node.quasis
-                .map((q, i) => q.value.raw + (replacedExpressions[i] || ""))
-                .join("");
-            } else {
-              return node;
-            }
-
-            let keyName;
-            if (input != null && cnMap[input]) {
-              keyName = cnMap[input];
-            } else {
-              const styleObject = convertTwToJs(input);
-              if (styleObject == null) {
-                return null;
-              }
-              // Put replace IDs with expressions using expressionMap.
-              for (const key of Object.keys(styleObject)) {
-                const value = styleObject[key];
-                // $FlowFixMe
-                if (expressionMap[value]) {
-                  // $FlowFixMe
-                  styleObject[key] = expressionMap[value];
-                }
-              }
-
-              keyName = `$${++count}`;
-              styleMap[keyName] = styleObject;
-              cnMap[input] = keyName;
-            }
-            return t.memberExpression(styles, t.identifier(keyName));
-          });
+          const transformedArgs = callExpression.get('arguments').map(pathToStyleX);
 
           if (isHTML) {
             path.replaceWith(
@@ -285,11 +289,22 @@ const customBabelPlugin = (): PluginObj<> => {
           );
         }
       },
+      CallExpression(path: NodePath<t.CallExpression>) {
+        if (!isCallExpressionNamed(path, ["tw"])) {
+          return;
+        }
+        const transformedArgs = path.get('arguments').map(pathToStyleX);
+        path.replaceWith(
+          t.arrayExpression(
+            transformedArgs
+          )
+        );
+      },
     },
   };
 };
 
-function isCnOrTwMergeCall(path: NodePath<t.Expression>): path is NodePath<t.CallExpression> {
+function isCallExpressionNamed(path: NodePath<t.Expression>, fnNames: $ReadOnlyArray<string>): path is NodePath<t.CallExpression> {
   if (!pathUtils.isCallExpression(path)) {
     // $FlowFixMe
     return false;
@@ -299,7 +314,7 @@ function isCnOrTwMergeCall(path: NodePath<t.Expression>): path is NodePath<t.Cal
     return false;
   }
   const name = callee.node.name;
-  if (name !== "cn" && name !== "twMerge") {
+  if (!fnNames.includes(name)) {
     return false;
   }
   return true;

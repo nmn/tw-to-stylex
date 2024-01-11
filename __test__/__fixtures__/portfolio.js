@@ -2,10 +2,10 @@
  * v0 by Vercel.
  * @see https://v0.dev/t/u18ILcKLQhV
  */
-import Link from 'next/link';
-import { CardHeader, CardFooter, Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import Link from "next/link";
+import { CardHeader, CardFooter, Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function Component() {
   return (
@@ -81,7 +81,9 @@ export default function Component() {
         id="projects"
       >
         <Card>
-          <CardHeader>
+          <CardHeader
+            style={tw("text-lg font-bold text-gray-500 dark:text-gray-400")}
+          >
             <h3 className="text-lg font-bold">Project 1</h3>
           </CardHeader>
           <div>

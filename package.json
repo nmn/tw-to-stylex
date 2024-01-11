@@ -1,6 +1,6 @@
 {
   "name": "tailwind-to-stylex",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "A utility for converting Tailwind CSS to Stylex",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

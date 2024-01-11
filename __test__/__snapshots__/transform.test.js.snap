@@ -256,10 +256,10 @@ exports[`tailwind-to-stylex transforms portfolio.js 1`] = `
  * v0 by Vercel.
  * @see https://v0.dev/t/u18ILcKLQhV
  */
-import Link from 'next/link';
-import { CardHeader, CardFooter, Card } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import Link from "next/link";
+import { CardHeader, CardFooter, Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 export default function Component() {
   return <section {..._stylex.props(_styles.$1)}>
       <header {..._stylex.props(_styles.$2)}>
@@ -315,11 +315,11 @@ export default function Component() {
       </div>
       <div {..._stylex.props(_styles.$15)} id="projects">
         <Card>
-          <CardHeader>
-            <h3 {..._stylex.props(_styles.$16)}>Project 1</h3>
+          <CardHeader style={[_styles.$16]}>
+            <h3 {..._stylex.props(_styles.$17)}>Project 1</h3>
           </CardHeader>
           <div>
-            <p {..._stylex.props(_styles.$17)}>
+            <p {..._stylex.props(_styles.$18)}>
               This is a brief description of my project. It includes details
               about the technologies I used and the problems I solved.
             </p>
@@ -332,10 +332,10 @@ export default function Component() {
         </Card>
         <Card>
           <CardHeader>
-            <h3 {..._stylex.props(_styles.$16)}>Project 2</h3>
+            <h3 {..._stylex.props(_styles.$17)}>Project 2</h3>
           </CardHeader>
           <div>
-            <p {..._stylex.props(_styles.$17)}>
+            <p {..._stylex.props(_styles.$18)}>
               This is a brief description of my project. It includes details
               about the technologies I used and the problems I solved.
             </p>
@@ -348,10 +348,10 @@ export default function Component() {
         </Card>
         <Card>
           <CardHeader>
-            <h3 {..._stylex.props(_styles.$16)}>Project 3</h3>
+            <h3 {..._stylex.props(_styles.$17)}>Project 3</h3>
           </CardHeader>
           <div>
-            <p {..._stylex.props(_styles.$17)}>
+            <p {..._stylex.props(_styles.$18)}>
               This is a brief description of my project. It includes details
               about the technologies I used and the problems I solved.
             </p>
@@ -367,24 +367,24 @@ export default function Component() {
         <h2 {..._stylex.props(_styles.$14)}>
           Contact Me
         </h2>
-        <form {..._stylex.props(_styles.$18)}>
-          <div {..._stylex.props(_styles.$19)}>
-            <div {..._stylex.props(_styles.$20)}>
-              <label {..._stylex.props(_styles.$21)} htmlFor="grid-first-name">
+        <form {..._stylex.props(_styles.$19)}>
+          <div {..._stylex.props(_styles.$20)}>
+            <div {..._stylex.props(_styles.$21)}>
+              <label {..._stylex.props(_styles.$22)} htmlFor="grid-first-name">
                 Name
               </label>
               <Input id="grid-first-name" placeholder="Name" type="text" />
             </div>
-            <div {..._stylex.props(_styles.$22)}>
-              <label {..._stylex.props(_styles.$21)} htmlFor="grid-last-name">
+            <div {..._stylex.props(_styles.$23)}>
+              <label {..._stylex.props(_styles.$22)} htmlFor="grid-last-name">
                 Email
               </label>
               <Input id="grid-last-name" placeholder="Email" type="email" />
             </div>
           </div>
-          <div {..._stylex.props(_styles.$19)}>
-            <div {..._stylex.props(_styles.$23)}>
-              <label {..._stylex.props(_styles.$21)} htmlFor="grid-password">
+          <div {..._stylex.props(_styles.$20)}>
+            <div {..._stylex.props(_styles.$24)}>
+              <label {..._stylex.props(_styles.$22)} htmlFor="grid-password">
                 Message
               </label>
               <Input id="grid-password" placeholder="Your message" type="text" />
@@ -565,26 +565,32 @@ const _styles = _stylex.create({
   $16: {
     fontSize: "1.125rem",
     lineHeight: "1.75rem",
-    fontWeight: 700
+    fontWeight: 700,
+    color: "#6B7280"
   },
   $17: {
+    fontSize: "1.125rem",
+    lineHeight: "1.75rem",
+    fontWeight: 700
+  },
+  $18: {
     fontSize: "0.875rem",
     lineHeight: "1.25rem",
     color: "#6B7280"
   },
-  $18: {
+  $19: {
     marginTop: "1.5rem",
     width: "100%",
     maxWidth: "32rem"
   },
-  $19: {
+  $20: {
     display: "flex",
     marginBottom: "1.5rem",
     marginLeft: "-0.75rem",
     marginRight: "-0.75rem",
     flexWrap: "wrap"
   },
-  $20: {
+  $21: {
     paddingLeft: "0.75rem",
     paddingRight: "0.75rem",
     marginBottom: {
@@ -596,7 +602,7 @@ const _styles = _stylex.create({
       "@media (min-width: 768px)": "50%"
     }
   },
-  $21: {
+  $22: {
     display: "block",
     marginBottom: "0.5rem",
     fontSize: "0.75rem",
@@ -606,7 +612,7 @@ const _styles = _stylex.create({
     color: "#374151",
     textTransform: "uppercase"
   },
-  $22: {
+  $23: {
     paddingLeft: "0.75rem",
     paddingRight: "0.75rem",
     width: {
@@ -614,7 +620,7 @@ const _styles = _stylex.create({
       "@media (min-width: 768px)": "50%"
     }
   },
-  $23: {
+  $24: {
     paddingLeft: "0.75rem",
     paddingRight: "0.75rem",
     width: "100%"
@@ -675,8 +681,7 @@ const _styles = _stylex.create({
 `;
 
 exports[`tailwind-to-stylex transforms variable-are-left-alone.js 1`] = `
-"import * as _stylex from "@stylexjs/stylex";
-import * as stylex from "@stylexjs/stylex";
+"import * as stylex from "@stylexjs/stylex";
 export const colors = stylex.defineVars({
   darkBlue: "#006ce9",
   lightBlue: "#18b6f6",
