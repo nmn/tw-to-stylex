@@ -166,12 +166,14 @@ exports[`tailwind-to-stylex transforms form.js 1`] = `
  * v0 by Vercel.
  * @see https://v0.dev/t/WfjCkNNqj9B
  */
-import { CardTitle, CardDescription, CardHeader, CardContent, CardFooter, Card } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-export default function Component() {
+import { CardTitle, CardDescription, CardHeader, CardContent, CardFooter, Card } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+export default function Component({
+  xstyle
+}) {
   return <Card>
       <CardHeader>
         <CardTitle>Uniswap Slot0 Information</CardTitle>
@@ -180,14 +182,16 @@ export default function Component() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div {..._stylex.props(_styles.$1)}>
-          <div {..._stylex.props(_styles.$2)}>
+        <div {..._stylex.props(_styles.$1, xstyle)}>
+          <div {..._stylex.props(xstyle, _styles.$2)}>
             <Label htmlFor="sqrtPriceX96">Sqrt Price X96</Label>
             <Input disabled id="sqrtPriceX96" placeholder="Sqrt Price X96" />
           </div>
           <div {..._stylex.props(_styles.$2)}>
-            <Label htmlFor="tick">Tick</Label>
-            <Input disabled id="tick" placeholder="Tick" />
+            <Label htmlFor="tick" className={_styles.$2}>
+              Tick
+            </Label>
+            <Input disabled id="tick" placeholder="Tick" className={[_styles.$2, xstyle]} />
           </div>
           <div {..._stylex.props(_styles.$2)}>
             <Label htmlFor="observationIndex">Observation Index</Label>
@@ -681,6 +685,5 @@ export const colors = stylex.defineVars({
   dirtyBlack: "#1d2033",
   darkBackground: "#151934",
   darkText: "#ffffff"
-});
-const _styles = _stylex.create({});"
+});"
 `;

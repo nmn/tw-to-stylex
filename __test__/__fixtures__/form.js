@@ -9,13 +9,13 @@ import {
   CardContent,
   CardFooter,
   Card,
-} from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
-export default function Component() {
+export default function Component({ xstyle }) {
   return (
     <Card>
       <CardHeader>
@@ -25,14 +25,21 @@ export default function Component() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-2 gap-4 text-sm">
-          <div className="flex flex-col space-y-1.5">
+        <div className={cn("grid grid-cols-2 gap-4 text-sm", xstyle)}>
+          <div className={twMerge(xstyle, "flex flex-col space-y-1.5")}>
             <Label htmlFor="sqrtPriceX96">Sqrt Price X96</Label>
             <Input disabled id="sqrtPriceX96" placeholder="Sqrt Price X96" />
           </div>
           <div className="flex flex-col space-y-1.5">
-            <Label htmlFor="tick">Tick</Label>
-            <Input disabled id="tick" placeholder="Tick" />
+            <Label htmlFor="tick" className="flex flex-col space-y-1.5">
+              Tick
+            </Label>
+            <Input
+              disabled
+              id="tick"
+              placeholder="Tick"
+              className={cn("flex flex-col space-y-1.5", xstyle)}
+            />
           </div>
           <div className="flex flex-col space-y-1.5">
             <Label htmlFor="observationIndex">Observation Index</Label>

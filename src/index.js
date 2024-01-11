@@ -13,6 +13,7 @@ import { transformAsync } from "@babel/core";
 import type { NodePath } from "@babel/traverse";
 import type { PluginObj } from "@babel/core";
 import { convertFromCssToJss, getConvertedClasses, type Jss } from "./helpers";
+import * as pathUtils from "./babel-path-utils";
 
 const rebaseJss = (jss: Jss): Jss => {
   const result: Jss = {};
@@ -92,6 +93,10 @@ const convertToAst = (value: mixed): t.Expression => {
   if (Array.isArray(value)) {
     return t.arrayExpression(value.map(convertToAst));
   }
+  if (typeof value === 'object' && value != null && typeof value.type === 'string') {
+    // $FlowFixMe
+    return value;
+  }
   if (typeof value === "object" && value != null) {
     return t.objectExpression(
       Object.keys(value).map((key) =>
@@ -139,6 +144,10 @@ const customBabelPlugin = (): PluginObj<> => {
           const statments: Array<NodePath<t.Statement>> = path.get("body");
           const lastStatement = statments[statments.length - 1];
 
+          if (Object.keys(styleMap).length === 0) {
+            return;
+          }
+
           lastStatement.insertAfter(
             t.variableDeclaration("const", [
               t.variableDeclarator(
@@ -167,57 +176,69 @@ const customBabelPlugin = (): PluginObj<> => {
           return;
         }
         let valuePath = path.get("value");
-        if (valuePath.isJSXExpressionContainer()) {
+        if (pathUtils.isJSXExpressionContainer(valuePath)) {
           valuePath = valuePath.get("expression");
         }
 
-        if (
-          valuePath.isCallExpression() &&
-          (valuePath: NodePath<t.CallExpression>)
-            .get("callee")
-            .isIdentifier() &&
-          (valuePath: NodePath<t.CallExpression>).get("callee").node.name ===
-            "cn" &&
-          valuePath.get("arguments")[0].isStringLiteral() &&
-          valuePath
-            .get("arguments")
-            .slice(1)
-            .every((arg: $FlowFixMe) => arg.isIdentifier())
-        ) {
-          const input: string = valuePath.get("arguments")[0].node.value;
-
-          let keyName;
-          if (cnMap[input]) {
-            keyName = cnMap[input];
-          } else {
-            const styleObject = convertTwToJs(input);
-            if (styleObject == null) {
-              return;
+        if (isCnOrTwMergeCall(valuePath)) {
+          const callExpression: NodePath<t.CallExpression> = valuePath;
+          const transformedArgs = callExpression.get('arguments').map((arg: NodePath<t.Expression>): t.Expression | null => {
+            const node: t.Expression = arg.node;
+            let expressionMap: {[string]: mixed} = {};
+            let input: string;
+            if (pathUtils.isStringLiteral(arg)) {
+              input = arg.node.value;
+            } else if (pathUtils.isTemplateLiteral(arg)) {
+              let val = 0;
+              const replacedExpressions = arg.node.expressions.map((e) => {
+                const key = `$${++val}`;
+                expressionMap[key] = e;
+                return key;
+              });
+              // join the strings and expressions
+              input = arg.node.quasis
+                .map((q, i) => q.value.raw + (replacedExpressions[i] || ""))
+                .join("");
+            } else {
+              return node;
             }
-            keyName = `$${++count}`;
-            styleMap[keyName] = styleObject;
-            cnMap[input] = keyName;
-          }
 
-          valuePath
-            .get("arguments")[0]
-            .replaceWith(t.memberExpression(styles, t.identifier(keyName)));
+            let keyName;
+            if (input != null && cnMap[input]) {
+              keyName = cnMap[input];
+            } else {
+              const styleObject = convertTwToJs(input);
+              if (styleObject == null) {
+                return null;
+              }
+              // Put replace IDs with expressions using expressionMap.
+              for (const key of Object.keys(styleObject)) {
+                const value = styleObject[key];
+                // $FlowFixMe
+                if (expressionMap[value]) {
+                  // $FlowFixMe
+                  styleObject[key] = expressionMap[value];
+                }
+              }
+
+              keyName = `$${++count}`;
+              styleMap[keyName] = styleObject;
+              cnMap[input] = keyName;
+            }
+            return t.memberExpression(styles, t.identifier(keyName));
+          });
 
           if (isHTML) {
             path.replaceWith(
               t.jsxSpreadAttribute(
                 t.callExpression(
                   t.memberExpression(stylex, t.identifier("props")),
-                  valuePath.get("arguments").map((arg: $FlowFixMe) => arg.node)
+                  transformedArgs
                 )
               )
             );
           } else {
-            valuePath.replaceWith(
-              t.arrayExpression(
-                valuePath.get("arguments").map((arg: $FlowFixMe) => arg.node)
-              )
-            );
+            valuePath.replaceWith(t.arrayExpression(transformedArgs));
           }
 
           return;
@@ -267,6 +288,22 @@ const customBabelPlugin = (): PluginObj<> => {
     },
   };
 };
+
+function isCnOrTwMergeCall(path: NodePath<t.Expression>): path is NodePath<t.CallExpression> {
+  if (!pathUtils.isCallExpression(path)) {
+    // $FlowFixMe
+    return false;
+  }
+  const callee = path.get("callee");
+  if (!pathUtils.isIdentifier(callee)) {
+    return false;
+  }
+  const name = callee.node.name;
+  if (name !== "cn" && name !== "twMerge") {
+    return false;
+  }
+  return true;
+}
 
 export default async function tailwindToStylex(
   source: string
