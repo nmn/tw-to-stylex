@@ -7,7 +7,7 @@
   "bin": {
     "tw-to-stylex": "./lib/tw-to-stylex.js"
   },
-  "repository": "https://www.github.com/facebook/stylex",
+  "repository": "https://github.com/nmn/tw-to-stylex",
   "license": "MIT",
   "scripts": {
     "prebuild": "node ./scripts/gen-types.js -i src/ -o lib/",
