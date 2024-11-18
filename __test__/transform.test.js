@@ -87,14 +87,14 @@ describe("tailwind-to-stylex", () => {
          right: "0",
          bottom: "0",
          left: "0",
-         zIndex: 50
+         zIndex: "50"
        },
        $2: {
          position: "fixed",
          right: "0",
          left: "0",
          bottom: "0",
-         zIndex: 50,
+         zIndex: "50",
          marginTop: "6rem",
          height: "96%"
        },

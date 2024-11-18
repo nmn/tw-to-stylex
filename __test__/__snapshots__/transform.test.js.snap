@@ -89,10 +89,8 @@ const _styles = _stylex.create({
     position: "relative",
     justifyContent: "flex-start",
     width: {
-      default: {
-        default: "100%",
-        "@media (min-width: 768px)": "10rem"
-      },
+      default: "100%",
+      "@media (min-width: 768px)": "10rem",
       "@media (min-width: 1024px)": "16rem"
     },
     fontSize: "0.875rem",
@@ -130,10 +128,10 @@ const _styles = _stylex.create({
     borderWidth: "1px",
     height: "1.25rem",
     fontFamily: "Menlo, Monaco, Consolas, \\"Liberation Mono\\", \\"Courier New\\", monospace",
-    fontWeight: 500,
+    fontWeight: "500",
     pointerEvents: "none",
     userSelect: "none",
-    opacity: 1,
+    opacity: "1",
     color: "10px"
   },
   $5: {
@@ -449,7 +447,7 @@ const _styles = _stylex.create({
   $7: {
     fontSize: "0.875rem",
     lineHeight: "1.25rem",
-    fontWeight: 500,
+    fontWeight: "500",
     textUnderlineOffset: "4px",
     textDecoration: {
       default: null,
@@ -480,9 +478,9 @@ const _styles = _stylex.create({
     },
     lineHeight: {
       default: "2.25rem",
-      "@media (min-width: 640px)": 1
+      "@media (min-width: 640px)": "1"
     },
-    fontWeight: 700,
+    fontWeight: "700",
     letterSpacing: "-0.05em"
   },
   $11: {
@@ -507,7 +505,7 @@ const _styles = _stylex.create({
     height: "2.5rem",
     fontSize: "0.875rem",
     lineHeight: "1.25rem",
-    fontWeight: 500,
+    fontWeight: "500",
     color: "#F9FAFB",
     backgroundColor: "#111827",
     transitionProperty: "color, background-color, border-color, text-decoration-color, fill, stroke",
@@ -537,7 +535,7 @@ const _styles = _stylex.create({
       default: "2.25rem",
       "@media (min-width: 640px)": "2.5rem"
     },
-    fontWeight: 700,
+    fontWeight: "700",
     letterSpacing: "-0.05em"
   },
   $15: {
@@ -555,23 +553,21 @@ const _styles = _stylex.create({
     paddingBottom: "3rem",
     gap: "1.5rem",
     gridTemplateColumns: {
-      default: {
-        default: null,
-        "@media (min-width: 640px)": "repeat(2, minmax(0, 1fr))"
-      },
+      default: null,
+      "@media (min-width: 640px)": "repeat(2, minmax(0, 1fr))",
       "@media (min-width: 768px)": "repeat(3, minmax(0, 1fr))"
     }
   },
   $16: {
     fontSize: "1.125rem",
     lineHeight: "1.75rem",
-    fontWeight: 700,
+    fontWeight: "700",
     color: "#6B7280"
   },
   $17: {
     fontSize: "1.125rem",
     lineHeight: "1.75rem",
-    fontWeight: 700
+    fontWeight: "700"
   },
   $18: {
     fontSize: "0.875rem",
@@ -607,7 +603,7 @@ const _styles = _stylex.create({
     marginBottom: "0.5rem",
     fontSize: "0.75rem",
     lineHeight: "1rem",
-    fontWeight: 700,
+    fontWeight: "700",
     letterSpacing: "0.025em",
     color: "#374151",
     textTransform: "uppercase"

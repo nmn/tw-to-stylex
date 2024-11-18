@@ -16,9 +16,11 @@
   },
   "dependencies": {
     "@babel/plugin-syntax-typescript": "^7.23.3",
+    "lightningcss": "^1.27.0",
     "postcss": "^8.4.32",
     "postcss-js": "^4.0.1",
-    "prettier-plugin-hermes-parser": "^0.18.0"
+    "prettier-plugin-hermes-parser": "^0.18.0",
+    "tailwindcss": "^4.0.0-alpha.24"
   },
   "jest": {},
   "files": [
