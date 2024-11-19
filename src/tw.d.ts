@@ -1121,6 +1121,148 @@ type Hyphens<T extends string>
   ? {hyphens: Value}
   : {}
 
+type BackgroundAttachment<T extends string>
+  = T extends `bg-attachment-${infer Value extends 'fixed' | 'local' | 'scroll'}`
+  ? {backgroundAttachment: Value}
+  : {}
+
+type BackgroundClip<T extends string>
+  = T extends `bg-clip-${infer Value extends 'border' | 'padding' | 'content'}`
+  ? {backgroundClip: `${Value}-box`}
+  : T extends `bg-clip-text`
+  ? {backgroundClip: 'text'}
+  : {}
+
+type BackgroundColor<T extends string>
+  = T extends `bg-[${infer CustomValue}]`
+  ? {backgroundColor: UnderscoreToSpace<CustomValue>}
+  : T extends `bg-${infer Value extends 'inherit' | 'transparent'}`
+  ? {backgroundColor: Value}
+  : T extends `bg-current`
+  ? {backgroundColor: 'currentColor'}
+  : T extends `bg-${string}`
+  ? {backgroundColor: string} // too many colors to list
+  : {}
+
+type BackgroundOrigin<T extends string>
+  = T extends `bg-origin-${infer Value extends 'border' | 'padding' | 'content'}`
+  ? {backgroundOrigin: `${Value}-box`}
+  : {}
+
+type BackgroundPosition<T extends string>
+  = T extends `bg-[${infer CustomValue}]`
+  ? {background: UnderscoreToSpace<CustomValue>}
+  : T extends `bg-${infer Value extends PositionXValue | PositionYValue}`
+  ? {backgroundPosition: Value}
+  : T extends `bg-${infer Value extends PositionXValue}-${infer Value2 extends PositionYValue}`
+  ? {backgroundPosition: `${Value} ${Value2}`}
+  : T extends `bg-center`
+  ? {backgroundPosition: 'center'}
+  : {}
+
+type BackgroundRepeat<T extends string>
+  = T extends `bg-${infer Value extends 'repeat' | 'no-repeat' | 'repeat-x' | 'repeat-y'}`
+  ? {backgroundRepeat: Value}
+  : T extends `bg-repeat-${infer Value extends 'round' | 'space'}`
+  ? {backgroundRepeat: Value}
+  : {}
+
+type BackgroundSize<T extends string>
+  = T extends `bg-[length:${infer CustomValue}]`
+  ? {backgroundSize: UnderscoreToSpace<CustomValue>}
+  : T extends `bg-${infer Value extends 'auto' | 'cover' | 'contain'}`
+  ? {backgroundSize: Value}
+  : {}
+
+type BackgroundImage<T extends string>
+  = T extends `bg-[url(${infer CustomValue})]`
+  ? {backgroundImage: `url(${UnderscoreToSpace<CustomValue>})`}
+  : T extends `bg-none`
+  ? {backgroundImage: 'none'}
+  : T extends `bg-gradient-to-${'t' | 'tr' | 'r' | 'br' | 'b' | 'bl' | 'l' | 'tl'}`
+  ? {backgroundImage: string} // too many gradients to list
+  : {}
+
+
+type BorderRadiusValue =
+  { 'none' : '0px'
+  , 'sm' : '0.125rem'
+  , 'md' : '0.375rem'
+  , 'lg' : '0.5rem'
+  , 'xl' : '0.75rem'
+  , '2xl': '1rem'
+  , '3xl': '1.5rem'
+  , 'full' : '9999px'
+  }
+type BorderRadius<T extends string>
+  = T extends `rounded-[${infer CustomValue}]`
+  ? {borderRadius: UnderscoreToSpace<CustomValue>}
+  : T extends `rounded-s-[${infer CustomValue}]`
+  ? {borderStartStartRadius: UnderscoreToSpace<CustomValue>, borderEndStartRadius: UnderscoreToSpace<CustomValue>}
+  : T extends `rounded-e-[${infer CustomValue}]`
+  ? {borderStartEndRadius: UnderscoreToSpace<CustomValue>, borderEndEndRadius: UnderscoreToSpace<CustomValue>}
+  : T extends `rounded-t-[${infer CustomValue}]`
+  ? {borderTopLeftRadius: UnderscoreToSpace<CustomValue>, borderTopRightRadius: UnderscoreToSpace<CustomValue>}
+  : T extends `rounded-b-[${infer CustomValue}]`
+  ? {borderBottomLeftRadius: UnderscoreToSpace<CustomValue>, borderBottomRightRadius: UnderscoreToSpace<CustomValue>}
+  : T extends `rounded-l-[${infer CustomValue}]`
+  ? {borderTopLeftRadius: UnderscoreToSpace<CustomValue>, borderBottomLeftRadius: UnderscoreToSpace<CustomValue>}
+  : T extends `rounded-r-[${infer CustomValue}]`
+  ? {borderTopRightRadius: UnderscoreToSpace<CustomValue>, borderBottomRightRadius: UnderscoreToSpace<CustomValue>}
+  : T extends `rounded-tl-[${infer CustomValue}]`
+  ? {borderTopLeftRadius: UnderscoreToSpace<CustomValue>}
+  : T extends `rounded-tr-[${infer CustomValue}]`
+  ? {borderTopRightRadius: UnderscoreToSpace<CustomValue>}
+  : T extends `rounded-bl-[${infer CustomValue}]`
+  ? {borderBottomLeftRadius: UnderscoreToSpace<CustomValue>}
+  : T extends `rounded-br-[${infer CustomValue}]`
+  ? {borderBottomRightRadius: UnderscoreToSpace<CustomValue>}
+  : T extends `rounded`
+  ? {borderRadius: '0.25rem'}
+  : T extends `rounded-s`
+  ? {borderStartStartRadius: '0.25rem', borderEndStartRadius: '0.25rem'}
+  : T extends `rounded-e`
+  ? {borderStartEndRadius: '0.25rem', borderEndEndRadius: '0.25rem'}
+  : T extends `rounded-t`
+  ? {borderTopLeftRadius: '0.25rem', borderTopRightRadius: '0.25rem'}
+  : T extends `rounded-b`
+  ? {borderBottomLeftRadius: '0.25rem', borderBottomRightRadius: '0.25rem'}
+  : T extends `rounded-l`
+  ? {borderTopLeftRadius: '0.25rem', borderBottomLeftRadius: '0.25rem'}
+  : T extends `rounded-r`
+  ? {borderTopRightRadius: '0.25rem', borderBottomRightRadius: '0.25rem'}
+  : T extends `rounded-tl`
+  ? {borderTopLeftRadius: '0.25rem'}
+  : T extends `rounded-tr`
+  ? {borderTopRightRadius: '0.25rem'}
+  : T extends `rounded-bl`
+  ? {borderBottomLeftRadius: '0.25rem'}
+  : T extends `rounded-br`
+  ? {borderBottomRightRadius: '0.25rem'}
+  : T extends `rounded-${infer Value extends keyof BorderRadiusValue}`
+  ? {borderRadius: BorderRadiusValue[Value]}
+  : T extends `rounded-s-${infer Value extends keyof BorderRadiusValue}`
+  ? {borderStartStartRadius: BorderRadiusValue[Value], borderEndStartRadius: BorderRadiusValue[Value]}
+  : T extends `rounded-e-${infer Value extends keyof BorderRadiusValue}`
+  ? {borderStartEndRadius: BorderRadiusValue[Value], borderEndEndRadius: BorderRadiusValue[Value]}
+  : T extends `rounded-t-${infer Value extends keyof BorderRadiusValue}`
+  ? {borderTopLeftRadius: BorderRadiusValue[Value], borderTopRightRadius: BorderRadiusValue[Value]}
+  : T extends `rounded-b-${infer Value extends keyof BorderRadiusValue}`
+  ? {borderBottomLeftRadius: BorderRadiusValue[Value], borderBottomRightRadius: BorderRadiusValue[Value]}
+  : T extends `rounded-l-${infer Value extends keyof BorderRadiusValue}`
+  ? {borderTopLeftRadius: BorderRadiusValue[Value], borderBottomLeftRadius: BorderRadiusValue[Value]}
+  : T extends `rounded-r-${infer Value extends keyof BorderRadiusValue}`
+  ? {borderTopRightRadius: BorderRadiusValue[Value], borderBottomRightRadius: BorderRadiusValue[Value]}
+  : T extends `rounded-tl-${infer Value extends keyof BorderRadiusValue}`
+  ? {borderTopLeftRadius: BorderRadiusValue[Value]}
+  : T extends `rounded-tr-${infer Value extends keyof BorderRadiusValue}`
+  ? {borderTopRightRadius: BorderRadiusValue[Value]}
+  : T extends `rounded-bl-${infer Value extends keyof BorderRadiusValue}`
+  ? {borderBottomLeftRadius: BorderRadiusValue[Value]}
+  : T extends `rounded-br-${infer Value extends keyof BorderRadiusValue}`
+  ? {borderBottomRightRadius: BorderRadiusValue[Value]}
+  : {}
+
 type TwClassToStyle<T extends string>
   = AspectRatio<T>
   & Columns<T>
