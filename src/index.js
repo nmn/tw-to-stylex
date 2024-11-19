@@ -47,7 +47,7 @@ const convertTwToJs = (classNames: string) => {
   try {
     resultCss = getConvertedClasses(classNames);
     resultJSS = convertFromCssToJss(resultCss);
-    return resultJSS && rebaseJss(resultJSS);
+    return resultJSS;
   } catch {
     console.log("Error converting", classNames);
     console.log("CSS Result:", resultCss);
@@ -171,8 +171,6 @@ const customBabelPlugin = (): PluginObj<> => {
 
           stylex = path.scope.generateUidIdentifier("stylex");
           styles = path.scope.generateUidIdentifier("styles");
-
-          
         },
         exit: (path: NodePath<t.Program>) => {
           if (Object.keys(styleMap).length === 0) {
@@ -212,7 +210,8 @@ const customBabelPlugin = (): PluginObj<> => {
         const name = jsxOpeningElement.name;
         const isHTML =
           name.type === "JSXIdentifier" &&
-          name.name[0].toLocaleLowerCase() === name.name[0];
+          name.name[0].toLocaleLowerCase() === name.name[0] &&
+          name.name.match(/^[a-z\-]+$/);
 
         const node = path.node;
         if (node.name.name !== "className" && node.name.name !== "class") {
