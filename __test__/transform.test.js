@@ -21,7 +21,7 @@ const fixtures = fs.readdirSync(fixturesPath).map((fixture) => {
   return [fixture, fs.readFileSync(path.join(fixturesPath, fixture), "utf-8")];
 });
 
-describe("tailwind-to-stylex", () => {
+describe("tailwind-to-stylex - fixtures", () => {
   fixtures.forEach(([fileName, fixture]) => {
     test(`transforms ${fileName}`, async () => {
       const result = await tailwindToStylex(fixture);

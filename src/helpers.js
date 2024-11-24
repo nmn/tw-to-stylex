@@ -162,6 +162,132 @@ const deeplyAddValue = (
   deeplyAddValue(subObject, value, conditions);
 };
 
+function _deepEquals(a: mixed, b: mixed): boolean {
+  if (a === b) {
+    return true;
+  }
+  if (typeof a !== "object" || typeof b !== "object") {
+    return false;
+  }
+  if (a === null || b === null) {
+    return false;
+  }
+  if (Array.isArray(a) !== Array.isArray(b)) {
+    return false;
+  }
+  if (Array.isArray(a)) {
+    if (a.length !== b.length) {
+      return false;
+    }
+    for (let i = 0; i < a.length; i++) {
+      if (!_deepEquals(a[i], b[i])) {
+        return false;
+      }
+    }
+    return true;
+  }
+  const aKeys = Object.keys(a);
+  const bKeys = Object.keys(b);
+  if (aKeys.length !== bKeys.length) {
+    return false;
+  }
+  for (let key of aKeys) {
+    if (!_deepEquals(a[key], b[key])) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function deepEquals([a, ...rest]: $ReadOnlyArray<mixed>): boolean {
+  for (let b of rest) {
+    if (!_deepEquals(a, b)) {
+      return false;
+    }
+  }
+  return true;
+} 
+
+const toPack = [
+  [['top', 'right', 'bottom', 'left'], 'inset',],
+  [['insetInlineStart', 'insetInlineEnd', 'insetBlockStart', 'insetBlockEnd'], 'inset',],
+  [['left', 'right'], 'insetInline',],
+  [['insetInlineStart', 'insetInlineEnd'], 'insetInline',],
+  [['top', 'bottom'], 'insetBlock',],
+  [['insetBlockStart', 'insetBlockEnd'], 'insetBlock',],
+  [['top', 'right', 'bottom', 'left'], 'margin',],
+  
+  [['marginTop', 'marginRight', 'marginBottom', 'marginLeft'], 'margin',],
+  [['marginInlineStart', 'marginInlineEnd', 'marginBlockStart', 'marginBlockEnd'], 'margin',],
+  [['marginTop', 'marginBottom'], 'marginBlock',],
+  [['marginBlockStart', 'marginBlockEnd'], 'marginBlock',],
+  [['marginInlineStart', 'marginInlineEnd'], 'marginInline',],
+  [['marginLeft', 'marginRight'], 'marginInline',],
+
+  [['paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft'], 'padding',],
+  [['paddingInlineStart', 'paddingInlineEnd', 'paddingBlockStart', 'paddingBlockEnd'], 'padding',],
+  [['paddingTop', 'paddingBottom'], 'paddingBlock',],
+  [['paddingBlockStart', 'paddingBlockEnd'], 'paddingBlock',],
+  [['paddingInlineStart', 'paddingInlineEnd'], 'paddingInline',],
+  [['paddingLeft', 'paddingRight'], 'paddingInline',],
+
+  [['borderTopWidth', 'borderRightWidth', 'borderBottomWidth', 'borderLeftWidth'], 'borderWidth',],
+  [['borderInlineStartWidth', 'borderInlineEndWidth', 'borderBlockStartWidth', 'borderBlockEndWidth'], 'borderWidth',],
+  [['borderTopWidth', 'borderBottomWidth'], 'borderBlockWidth',],
+  [['borderBlockStartWidth', 'borderBlockEndWidth'], 'borderBlockWidth',],
+  [['borderInlineStartWidth', 'borderInlineEndWidth'], 'borderInlineWidth',],
+  [['borderLeftWidth', 'borderRightWidth'], 'borderInlineWidth',],
+
+  [['borderTopColor', 'borderRightColor', 'borderBottomColor', 'borderLeftColor'], 'borderColor',],
+  [['borderInlineStartColor', 'borderInlineEndColor', 'borderBlockStartColor', 'borderBlockEndColor'], 'borderColor',],
+  [['borderTopColor', 'borderBottomColor'], 'borderBlockColor',],
+  [['borderBlockStartColor', 'borderBlockEndColor'], 'borderBlockColor',],
+  [['borderInlineStartColor', 'borderInlineEndColor'], 'borderInlineColor',],
+  [['borderLeftColor', 'borderRightColor'], 'borderInlineColor',],
+
+  [['borderTopStyle', 'borderRightStyle', 'borderBottomStyle', 'borderLeftStyle'], 'borderStyle',],
+  [['borderInlineStartStyle', 'borderInlineEndStyle', 'borderBlockStartStyle', 'borderBlockEndStyle'], 'borderStyle',],
+  [['borderTopStyle', 'borderBottomStyle'], 'borderBlockStyle',],
+  [['borderBlockStartStyle', 'borderBlockEndStyle'], 'borderBlockStyle',],
+  [['borderInlineStartStyle', 'borderInlineEndStyle'], 'borderInlineStyle',],
+  [['borderLeftStyle', 'borderRightStyle'], 'borderInlineStyle',],
+
+  [['borderTopLeftRadius', 'borderTopRightRadius', 'borderBottomRightRadius', 'borderBottomLeftRadius'], 'borderRadius',],
+  [['borderStartStartRadius', 'borderStartEndRadius', 'borderEndStartRadius', 'borderEndEndRadius'], 'borderRadius',],
+  
+  [['containIntrinsicWidth', 'containIntrinsicHeight'], 'containIntrinsicSize',],
+
+  [['rowGap', 'columnGap'], 'gap',],
+
+  [['overflowX', 'overflowY'], 'overflow',],
+];
+
+function packObject(obj: Jss) {
+  const output: Jss = {};
+  const keysToSkip: Array<string> = [];
+
+  for (const [toFind, replacement] of toPack) {
+    const allExist = toFind.every((key) => obj[key] !== undefined && !keysToSkip.includes(key));
+    if (!allExist) {
+      continue;
+    }
+    const allEqual = deepEquals(toFind.map((key) => obj[key]));
+    if (allEqual) {
+      keysToSkip.push(...toFind);
+      output[replacement] = obj[toFind[0]];
+    }
+  }
+
+  for (const key in obj) {
+    if (keysToSkip.includes(key)) {
+      continue;
+    }
+    output[key] = obj[key];
+  }
+
+  return output;
+}
+
 export const convertFromCssToJss = (
   classNames: string | $ReadOnlyArray<string>,
   css: string,
@@ -171,6 +297,7 @@ export const convertFromCssToJss = (
   const toMatch = typeof classNames === "string" 
     ? classNames.split(' ')
     : classNames;
+  const found: Array<string> = [];
   try {
     const root = postcss.parse(css);
     const object: Jss = {};
@@ -214,6 +341,7 @@ export const convertFromCssToJss = (
               .replaceAll("\\", "")
           );
         if (toMatch.includes(className)) {
+          found.push(className);
           for (let child of node.nodes) {
             processNode(child, [...atRules, ...pseudos]);
           }
@@ -258,7 +386,12 @@ export const convertFromCssToJss = (
       }
     };
     processNode(root);
-    return object;
+    const unfound = toMatch.filter((i) => !found.includes(i));
+    // if (unfound.length > 0) {
+    //   console.log('When compiling', classNames, 'the following classes were not compiled: ', unfound);
+    // }
+    const packed = packObject(object);
+    return packed;
   } catch (e) {
     console.log(e);
     return null;

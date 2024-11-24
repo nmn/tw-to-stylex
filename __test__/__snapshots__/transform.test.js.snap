@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`tailwind-to-stylex transforms command-menu.js 1`] = `
+exports[`tailwind-to-stylex - fixtures transforms command-menu.js 1`] = `
 "'use client';
 
 import * as _stylex from "@stylexjs/stylex";
@@ -113,6 +113,7 @@ const _styles = _stylex.create({
     }
   },
   $4: {
+    paddingInline: ".375rem",
     pointerEvents: "none",
     position: "absolute",
     top: ".375rem",
@@ -127,8 +128,6 @@ const _styles = _stylex.create({
     borderRadius: ".25rem",
     borderStyle: "var(--tw-border-style)",
     borderWidth: "1px",
-    paddingLeft: ".375rem",
-    paddingRight: ".375rem",
     fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace",
     fontSize: "10px",
     fontWeight: "500",
@@ -160,7 +159,7 @@ const _styles = _stylex.create({
 });"
 `;
 
-exports[`tailwind-to-stylex transforms form.js 1`] = `
+exports[`tailwind-to-stylex - fixtures transforms form.js 1`] = `
 "import * as _stylex from "@stylexjs/stylex";
 /**
  * v0 by Vercel.
@@ -249,7 +248,7 @@ const _styles = _stylex.create({
 });"
 `;
 
-exports[`tailwind-to-stylex transforms portfolio.js 1`] = `
+exports[`tailwind-to-stylex - fixtures transforms portfolio.js 1`] = `
 "import * as _stylex from "@stylexjs/stylex";
 /**
  * v0 by Vercel.
@@ -401,22 +400,17 @@ function IconMountain(props) {
 }
 const _styles = _stylex.create({
   $1: {
-    width: "100%",
-    paddingTop: "3rem",
-    paddingBottom: "3rem"
+    paddingBlock: "3rem",
+    width: "100%"
   },
   $2: {
-    display: "flex",
-    height: "3.5rem",
-    alignItems: "center",
-    paddingLeft: {
+    paddingInline: {
       default: "1rem",
       "@media (width >= 64rem)": "1.5rem"
     },
-    paddingRight: {
-      default: "1rem",
-      "@media (width >= 64rem)": "1.5rem"
-    }
+    display: "flex",
+    height: "3.5rem",
+    alignItems: "center"
   },
   $3: {
     display: "flex",
@@ -457,11 +451,7 @@ const _styles = _stylex.create({
     }
   },
   $8: {
-    paddingLeft: {
-      default: "1rem",
-      "@media (width >= 48rem)": "1.5rem"
-    },
-    paddingRight: {
+    paddingInline: {
       default: "1rem",
       "@media (width >= 48rem)": "1.5rem"
     }
@@ -501,6 +491,7 @@ const _styles = _stylex.create({
     }
   },
   $12: {
+    paddingInline: "2rem",
     display: "inline-flex",
     height: "2.5rem",
     alignItems: "center",
@@ -511,8 +502,6 @@ const _styles = _stylex.create({
       ":hover": "#111827e6",
       "@media (prefers-color-scheme: dark)": "#f9fafb"
     },
-    paddingLeft: "2rem",
-    paddingRight: "2rem",
     fontSize: ".875rem",
     lineHeight: "1.25rem",
     fontWeight: "500",
@@ -555,13 +544,8 @@ const _styles = _stylex.create({
     }
   },
   $13: {
-    paddingTop: "3rem",
-    paddingBottom: "3rem",
-    paddingLeft: {
-      default: "1rem",
-      "@media (width >= 48rem)": "1.5rem"
-    },
-    paddingRight: {
+    paddingBlock: "3rem",
+    paddingInline: {
       default: "1rem",
       "@media (width >= 48rem)": "1.5rem"
     }
@@ -579,18 +563,13 @@ const _styles = _stylex.create({
     letterSpacing: "-.05em"
   },
   $15: {
+    paddingBlock: "3rem",
+    paddingInline: {
+      default: "1rem",
+      "@media (width >= 48rem)": "1.5rem"
+    },
     display: "grid",
     gap: "1.5rem",
-    paddingTop: "3rem",
-    paddingBottom: "3rem",
-    paddingLeft: {
-      default: "1rem",
-      "@media (width >= 48rem)": "1.5rem"
-    },
-    paddingRight: {
-      default: "1rem",
-      "@media (width >= 48rem)": "1.5rem"
-    },
     gridTemplateColumns: {
       default: null,
       "@media (width >= 40rem)": "repeat(2, minmax(0, 1fr))",
@@ -620,20 +599,19 @@ const _styles = _stylex.create({
     }
   },
   $19: {
+    marginInline: "auto",
     marginTop: "1.5rem",
-    marginLeft: "auto",
-    marginRight: "auto",
     width: "100%",
     maxWidth: "32rem"
   },
   $20: {
-    marginLeft: "-.75rem",
-    marginRight: "-.75rem",
+    marginInline: "-.75rem",
     marginBottom: "1.5rem",
     display: "flex",
     flexWrap: "wrap"
   },
   $21: {
+    paddingInline: ".75rem",
     marginBottom: {
       default: "1.5rem",
       "@media (width >= 48rem)": "0"
@@ -641,9 +619,7 @@ const _styles = _stylex.create({
     width: {
       default: "100%",
       "@media (width >= 48rem)": "50%"
-    },
-    paddingLeft: ".75rem",
-    paddingRight: ".75rem"
+    }
   },
   $22: {
     marginBottom: ".5rem",
@@ -656,22 +632,20 @@ const _styles = _stylex.create({
     color: "#374151"
   },
   $23: {
+    paddingInline: ".75rem",
     width: {
       default: "100%",
       "@media (width >= 48rem)": "50%"
-    },
-    paddingLeft: ".75rem",
-    paddingRight: ".75rem"
+    }
   },
   $24: {
-    width: "100%",
-    paddingLeft: ".75rem",
-    paddingRight: ".75rem"
+    paddingInline: ".75rem",
+    width: "100%"
   }
 });"
 `;
 
-exports[`tailwind-to-stylex transforms theme-toggle.js 1`] = `
+exports[`tailwind-to-stylex - fixtures transforms theme-toggle.js 1`] = `
 "/**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -730,7 +704,7 @@ const _styles = _stylex.create({
 });"
 `;
 
-exports[`tailwind-to-stylex transforms variable-are-left-alone.js 1`] = `
+exports[`tailwind-to-stylex - fixtures transforms variable-are-left-alone.js 1`] = `
 "import * as stylex from "@stylexjs/stylex";
 export const colors = stylex.defineVars({
   darkBlue: "#006ce9",

@@ -9,14 +9,11 @@
 
 "use strict";
 
-import fs from "fs";
-import path from "path";
-
 jest.autoMockOff();
 
 import { tailwindToStylex } from "../src/index";
 
-describe("tailwind-to-stylex", () => {
+describe("tailwind-to-stylex small examples", () => {
   test("transforms simple example", async () => {
     const input = `
     function Component() {
@@ -116,9 +113,8 @@ describe("tailwind-to-stylex", () => {
          backgroundColor: "#09090b99"
        },
        $2: {
+         insetInline: "0",
          position: "fixed",
-         left: "0",
-         right: "0",
          bottom: "0",
          zIndex: "50",
          marginTop: "6rem",
