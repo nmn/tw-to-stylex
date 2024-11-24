@@ -32,49 +32,6 @@ const arbitrarySupportedClasses = {
   "max-h": "max-height",
 };
 
-const convertToCss = (classNames: string[]) => {
-  let cssCode = "";
-  CheatSheet.forEach((element) => {
-    element.content.forEach((content) => {
-      content.table.forEach((list) => {
-        if (classNames.includes(list[0])) {
-          cssCode += `${list[1]} \n`;
-        }
-
-        if (classNames.includes(list[1])) {
-          const semicolon = list[2][list[2].length - 1] !== ";" ? ";" : "";
-          cssCode += `${list[2]}${semicolon} \n`;
-        }
-      });
-    });
-  });
-
-  // Check for arbitrary values
-
-  const arbitraryClasses = classNames.filter((className) =>
-    className.includes("[")
-  );
-
-  arbitraryClasses.forEach((className) => {
-    try {
-      const property = className.split("-[")[0].replace(".", "");
-
-      const matches = className.match(/(?<=\[)[^\][]*(?=])/g);
-      if (!matches) {
-        return;
-      }
-
-      const properyValue = matches[0];
-      if (arbitrarySupportedClasses[property]) {
-        cssCode += `${arbitrarySupportedClasses[property]}: ${properyValue};\n`;
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  });
-
-  return cssCode;
-};
 
 const getBreakPoints = (input: string, breakpoint: string) => {
   return input
@@ -90,55 +47,6 @@ const getHoverClass = (input: string) => {
     .split(" ")
     .filter((i) => i.startsWith("hover:"))
     .map((i) => i.replace("hover:", ""));
-};
-
-export const getConvertedClasses = (input: string): string => {
-  if (input === "") return "";
-
-  const classNames = input
-    .split(/\s+/)
-    .map((i) => i.trim())
-    .filter((i) => i !== "");
-  const breakpoints = CheatSheet[0].content[1].table;
-
-  const hoverClasses = getHoverClass(input);
-
-  const smClasses = getBreakPoints(input, "sm");
-  const mdClasses = getBreakPoints(input, "md");
-  const lgClasses = getBreakPoints(input, "lg");
-  const xlClasses = getBreakPoints(input, "xl");
-  const _2xlClasses = getBreakPoints(input, "2xl");
-
-  const resultCss = `${convertToCss(classNames)}
-${
-  smClasses.length !== 0
-    ? breakpoints[0][1].replace("...", "\n  " + convertToCss(smClasses))
-    : ""
-}
-${
-  mdClasses.length !== 0
-    ? breakpoints[1][1].replace("...", "\n  " + convertToCss(mdClasses))
-    : ""
-}
-${
-  lgClasses.length !== 0
-    ? breakpoints[2][1].replace("...", "\n  " + convertToCss(lgClasses))
-    : ""
-}
-${
-  xlClasses.length !== 0
-    ? breakpoints[3][1].replace("...", "\n  " + convertToCss(xlClasses))
-    : ""
-}
-${
-  _2xlClasses.length !== 0
-    ? breakpoints[4][1].replace("...", "\n  " + convertToCss(_2xlClasses))
-    : ""
-}
-${hoverClasses.length !== 0 ? `:hover {\n ${convertToCss(hoverClasses)} }` : ""}
-`;
-
-  return resultCss;
 };
 
 export type JssValue =
@@ -254,7 +162,15 @@ const deeplyAddValue = (
   deeplyAddValue(subObject, value, conditions);
 };
 
-export const convertFromCssToJss = (css: string): null | Jss => {
+export const convertFromCssToJss = (
+  classNames: string | $ReadOnlyArray<string>,
+  css: string,
+): null | Jss => {
+  // console.log("classNames", classNames);
+  // console.log("css", css);
+  const toMatch = typeof classNames === "string" 
+    ? classNames.split(' ')
+    : classNames;
   try {
     const root = postcss.parse(css);
     const object: Jss = {};
@@ -268,15 +184,39 @@ export const convertFromCssToJss = (css: string): null | Jss => {
       if (node.type === "atrule") {
         const atRuleRaw = node.toString();
         const atRule = atRuleRaw.split("{")[0].trim();
+        if (!atRule.startsWith("@media") &&
+            !atRule.startsWith("@supports") &&
+            !atRule.startsWith("@container") &&
+            !atRule.startsWith("@scope")
+        ) {
+          return;
+        }
+        if (atRule.startsWith("@layer")) {
+          for (let child of node.nodes) {
+            processNode(child, atRules);
+          }
+          return;
+        }
         for (let child of node.nodes) {
           processNode(child, [...atRules, atRule]);
         }
         return;
       }
       if (node.type === "rule") {
+        
         const pseudos = extractPseudos(node.selector);
-        for (let child of node.nodes) {
-          processNode(child, [...atRules, ...pseudos]);
+        let className = pseudos
+          .reduce(
+            (acc, pseudo) => acc.replace(pseudo, ""),
+            node.selector
+              .replace(/^\./, '')
+              .replaceAll(' .', '')
+              .replaceAll("\\", "")
+          );
+        if (toMatch.includes(className)) {
+          for (let child of node.nodes) {
+            processNode(child, [...atRules, ...pseudos]);
+          }
         }
         return;
       }
@@ -302,7 +242,7 @@ export const convertFromCssToJss = (css: string): null | Jss => {
 
         const pseudoElementIndexes: Array<number> = atRules
           .map((r, i) => r.startsWith("::") ? i : null)
-          .filter((i): i is number => i !== null);
+          .filter((i)/*: i is number*/ => i !== null);
 
         if (pseudoElementIndexes.length > 0) {
           const lastPseudoElementIndex = pseudoElementIndexes[
@@ -327,33 +267,30 @@ export const convertFromCssToJss = (css: string): null | Jss => {
 
 // const testCss = `
 // /*! tailwindcss v4.0.0-alpha.24 | MIT License | https://tailwindcss.com */
-// .flex {
-//   display: flex;
+// .text-3xl {
+//   font-size: 1.875rem;
+//   line-height: 2.25rem;
 // }
 
-// .flex-col {
-//   flex-direction: column;
+// .font-bold {
+//   font-weight: 700;
 // }
 
-// .gap-\\[var\\(--foo\\)\\] {
-//   gap: var(--foo);
+// .tracking-tighter {
+//   letter-spacing: -0.05em;
 // }
 
-// .bg-sky-500 {
-//   background-color: oklch(.685 .169 237.323);
-// }
-
-// .hover\\:bg-\\[green\\] {
-//   &:hover {
-//     @media (hover: hover) {
-//       background-color: green;
-//     }
+// @media (width >= 40rem) {
+//   .sm\\:text-5xl {
+//     font-size: 3rem;
+//     line-height: 1;
 //   }
 // }
 
-// @media (width >= 48rem) {
-//   .md\\:bg-sky-500 {
-//     background-color: oklch(.685 .169 237.323);
+// @media (width >= 80rem) {
+//   .xl\\:text-6xl\\/none {
+//     font-size: 3.75rem;
+//     line-height: 1;
 //   }
 // }
 // `;

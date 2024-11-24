@@ -7,7 +7,8 @@ import { transformAsync } from "@babel/core";
 // import * as prettier from 'prettier';
 import type { NodePath } from "@babel/traverse";
 import type { PluginObj } from "@babel/core";
-import { convertFromCssToJss, getConvertedClasses, type Jss } from "./helpers";
+import {makeCompiler} from "./classes-to-css";
+import { convertFromCssToJss, type Jss } from "./helpers";
 import * as pathUtils from "./babel-path-utils";
 
 const rebaseJss = (jss: Jss): Jss => {
@@ -40,20 +41,6 @@ const rebaseJss = (jss: Jss): Jss => {
     }
   }
   return result;
-};
-
-const convertTwToJs = (classNames: string) => {
-  let resultCss, resultJSS;
-  try {
-    resultCss = getConvertedClasses(classNames);
-    resultJSS = convertFromCssToJss(resultCss);
-    return resultJSS;
-  } catch {
-    console.log("Error converting", classNames);
-    console.log("CSS Result:", resultCss);
-    console.log("JSS Result:", resultJSS, "\n\n\n\n");
-    return null;
-  }
 };
 
 const canBeIdentifier = (value: string): boolean => {
@@ -105,7 +92,7 @@ const convertToAst = (value: mixed): t.Expression => {
   throw new Error(`Cannot convert value to AST: ${String(value)}`);
 };
 
-const customBabelPlugin = (): PluginObj<> => {
+const customBabelPlugin = async (): Promise<PluginObj<>> => {
   let count = 0;
 
   let cnMap: { [string]: string } = {};
@@ -113,6 +100,22 @@ const customBabelPlugin = (): PluginObj<> => {
 
   let stylex: t.Identifier;
   let styles: t.Identifier;
+
+  const compile = await makeCompiler();
+
+  const convertTwToJs = (classNames: string) => {
+    let resultCss, resultJSS;
+    try {
+      resultCss = compile(classNames);
+      resultJSS = convertFromCssToJss(classNames, resultCss);
+      return resultJSS;
+    } catch {
+      console.log("Error converting", classNames);
+      console.log("CSS Result:", resultCss);
+      console.log("JSS Result:", resultJSS, "\n\n\n\n");
+      return null;
+    }
+  };
 
   const pathToStyleX = (arg: NodePath<t.Expression>): t.Expression | null => {
     const node: t.Expression = arg.node;
@@ -202,7 +205,7 @@ const customBabelPlugin = (): PluginObj<> => {
           );
         },
       },
-      JSXAttribute(path: NodePath<t.JSXAttribute>) {
+      JSXAttribute: (path: NodePath<t.JSXAttribute>) => {
         const jsxOpeningElement = path.parentPath.node;
         if (jsxOpeningElement.type !== "JSXOpeningElement") {
           return;
@@ -211,7 +214,7 @@ const customBabelPlugin = (): PluginObj<> => {
         const isHTML =
           name.type === "JSXIdentifier" &&
           name.name[0].toLocaleLowerCase() === name.name[0] &&
-          name.name.match(/^[a-z\-]+$/);
+          name.name.match(/^[a-z][a-z0-9\-]*$/);
 
         const node = path.node;
         if (node.name.name !== "className" && node.name.name !== "class") {
@@ -314,7 +317,9 @@ function isCallExpressionNamed(path: NodePath<t.Expression>, fnNames: $ReadOnlyA
   return true;
 }
 
-export default async function tailwindToStylex(
+export default customBabelPlugin;
+
+export async function tailwindToStylex(
   source: string
 ): Promise<string> {
   const isFlow = source.includes("@flow");

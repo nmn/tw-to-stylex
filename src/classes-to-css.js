@@ -7,20 +7,20 @@ import { compile } from "tailwindcss";
 import fs from "fs";
 import path from "path";
 
-const __dirname = path.dirname(import.meta.url ?? ".");
 let filePath = path.join(__dirname, "../theme.css");
 filePath = filePath.replace("file:", "");
 
-export async function run(
-  classes: string | $ReadOnlyArray<string>,
-  theme?: string = fs.readFileSync(filePath, "utf-8")
-): Promise<string> {
-  const candidates = typeof classes === "string" ? classes.split(" ") : classes;
-
+export async function makeCompiler(
+  theme: string = fs.readFileSync(filePath, "utf-8")
+): Promise<(string) => string> {
   let { build } = await compile(`${theme}\n\n@tailwind utilities;`);
-  const cssLines = optimizeCss(build(candidates));
+  return (classes: string | $ReadOnlyArray<string>): string => {
+    const candidates =
+      typeof classes === "string" ? classes.split(" ") : classes;
 
-  return cssLines;
+    const cssLines = optimizeCss(build(candidates));
+    return cssLines;
+  };
 }
 
 export function optimizeCss(
