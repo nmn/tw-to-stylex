@@ -1,9 +1,15 @@
 {
   "name": "tailwind-to-stylex",
-  "version": "0.3.0",
+  "version": "0.5.0",
   "description": "A utility for converting Tailwind CSS to Stylex",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "exports": {
+    ".": "./lib/index.js",
+    "./theme.css": "./theme.css",
+    "./tw": "./lib/tw.js",
+    "./lib/*": "./lib/*"
+  },
   "bin": {
     "tw-to-stylex": "./lib/tw-to-stylex.js"
   },
@@ -16,6 +22,7 @@
   },
   "dependencies": {
     "@babel/plugin-syntax-typescript": "^7.23.3",
+    "@stylexjs/stylex": "^0.9.3",
     "lightningcss": "^1.27.0",
     "postcss": "^8.4.32",
     "postcss-js": "^4.0.1",
@@ -24,7 +31,9 @@
   },
   "jest": {},
   "files": [
-    "lib/*"
+    "lib/*",
+    "theme.css",
+    "flow-modules/*"
   ],
   "devDependencies": {
     "@babel/cli": "^7.23.4",

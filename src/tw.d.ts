@@ -1,3 +1,5 @@
+import { MapNamespace } from "@stylexjs/stylex/lib/StyleXTypes"
+
 type ColorValues =
   { 'inherit'     : 'inherit'
   , 'current'     : 'currentColor'
@@ -1893,15 +1895,27 @@ type TwClassToStyle<T extends string>
   & MixBlendMode<T>
   & BackgroundBlendMode<T>
   & BorderRadius<T>
-  & BorderWidth<T>
-  & BorderColor<T>
+  & BorderWidthOrColor<T>
   & BorderStyle<T>
   & OutlineWidth<T>
   & OutlineColor<T>
   & OutlineStyle<T>
   & OutlineOffset<T>
   & BoxShadow<T>
-  
+  & Fill<T>
+  & Stroke<T>
+  & Cursor<T>
+  & PointerEvents<T>
+  & Resize<T>
+  & ScrollBehavior<T>
+  & ScrollMargin<T>
+  & ScrollPadding<T>
+  & ScrollSnapAlign<T>
+  & ScrollSnapStop<T>
+  & TouchAction<T>
+  & UserSelect<T>
+  & WillChange<T>
+
 
 type PseudoClasses 
   = 'hover'
@@ -2027,6 +2041,6 @@ type X = TwToObj<InputX>
 
 type Y = TwToObj<'font-sans tracking-wider hyphens-auto break-normal'>
 
-export default function tw<T extends string>(cn: T): TwToObj<T> {
+export default function tw<T extends string>(cn: T): MapNamespace<TwToObj<T>> {
   throw new Error('This function should be compiled away by the `tw-to-stylex` Babel plugin.')
 }

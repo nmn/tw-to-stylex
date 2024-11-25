@@ -174,8 +174,102 @@ const customBabelPlugin = async (): Promise<PluginObj<>> => {
 
           stylex = path.scope.generateUidIdentifier("stylex");
           styles = path.scope.generateUidIdentifier("styles");
-        },
-        exit: (path: NodePath<t.Program>) => {
+
+          path.traverse({
+            JSXAttribute: (jsxAttributePath: NodePath<t.JSXAttribute>) => {
+              const jsxOpeningElement = jsxAttributePath.parentPath.node;
+              if (jsxOpeningElement.type !== "JSXOpeningElement") {
+                return;
+              }
+              const name = jsxOpeningElement.name;
+              const isHTML =
+                name.type === "JSXIdentifier" &&
+                name.name[0].toLocaleLowerCase() === name.name[0] &&
+                name.name.match(/^[a-z][a-z0-9\-]*$/);
+
+              const node = jsxAttributePath.node;
+              if (node.name.name !== "className" && node.name.name !== "class") {
+                return;
+              }
+              let valuePath = jsxAttributePath.get("value");
+              if (pathUtils.isJSXExpressionContainer(valuePath)) {
+                valuePath = valuePath.get("expression");
+              }
+
+              if (isCallExpressionNamed(valuePath, ['cn', 'twMerge'])) {
+                const callExpression: NodePath<t.CallExpression> = valuePath;
+                const transformedArgs = callExpression.get('arguments').map(pathToStyleX);
+
+                if (isHTML) {
+                  jsxAttributePath.replaceWith(
+                    t.jsxSpreadAttribute(
+                      t.callExpression(
+                        t.memberExpression(stylex, t.identifier("props")),
+                        transformedArgs
+                      )
+                    )
+                  );
+                } else {
+                  valuePath.replaceWith(t.arrayExpression(transformedArgs));
+                }
+
+                return;
+              }
+
+              const result = valuePath.evaluate();
+              const { confident, value: existingValue } = result;
+              if (!confident) {
+                return;
+              }
+              if (typeof existingValue !== "string") {
+                return;
+              }
+
+              let keyName;
+
+              if (cnMap[existingValue]) {
+                keyName = cnMap[existingValue];
+              } else {
+                const styleObject = convertTwToJs(existingValue);
+                if (styleObject == null) {
+                  return;
+                }
+
+                keyName = `$${++count}`;
+                styleMap[keyName] = styleObject;
+                cnMap[existingValue] = keyName;
+              }
+
+              if (isHTML) {
+                jsxAttributePath.replaceWith(
+                  t.jsxSpreadAttribute(
+                    t.callExpression(
+                      t.memberExpression(stylex, t.identifier("props")),
+                      [t.memberExpression(styles, t.identifier(keyName))]
+                    )
+                  )
+                );
+              } else {
+                valuePath.replaceWith(
+                  t.jsxExpressionContainer(
+                    t.memberExpression(styles, t.identifier(keyName))
+                  )
+                );
+              }
+            },
+            CallExpression: (callExpressionPath: NodePath<t.CallExpression>) => {
+              if (!isCallExpressionNamed(callExpressionPath, ["tw"])) {
+                return;
+              }
+              const transformedArgs = callExpressionPath.get('arguments').map(pathToStyleX);
+              callExpressionPath.replaceWith(
+                t.arrayExpression(
+                  transformedArgs
+                )
+              );
+            },
+          });
+
           if (Object.keys(styleMap).length === 0) {
             return;
           }
@@ -204,98 +298,6 @@ const customBabelPlugin = async (): Promise<PluginObj<>> => {
             ])
           );
         },
-      },
-      JSXAttribute: (path: NodePath<t.JSXAttribute>) => {
-        const jsxOpeningElement = path.parentPath.node;
-        if (jsxOpeningElement.type !== "JSXOpeningElement") {
-          return;
-        }
-        const name = jsxOpeningElement.name;
-        const isHTML =
-          name.type === "JSXIdentifier" &&
-          name.name[0].toLocaleLowerCase() === name.name[0] &&
-          name.name.match(/^[a-z][a-z0-9\-]*$/);
-
-        const node = path.node;
-        if (node.name.name !== "className" && node.name.name !== "class") {
-          return;
-        }
-        let valuePath = path.get("value");
-        if (pathUtils.isJSXExpressionContainer(valuePath)) {
-          valuePath = valuePath.get("expression");
-        }
-
-        if (isCallExpressionNamed(valuePath, ['cn', 'twMerge'])) {
-          const callExpression: NodePath<t.CallExpression> = valuePath;
-          const transformedArgs = callExpression.get('arguments').map(pathToStyleX);
-
-          if (isHTML) {
-            path.replaceWith(
-              t.jsxSpreadAttribute(
-                t.callExpression(
-                  t.memberExpression(stylex, t.identifier("props")),
-                  transformedArgs
-                )
-              )
-            );
-          } else {
-            valuePath.replaceWith(t.arrayExpression(transformedArgs));
-          }
-
-          return;
-        }
-
-        const result = valuePath.evaluate();
-        const { confident, value: existingValue } = result;
-        if (!confident) {
-          return;
-        }
-        if (typeof existingValue !== "string") {
-          return;
-        }
-
-        let keyName;
-
-        if (cnMap[existingValue]) {
-          keyName = cnMap[existingValue];
-        } else {
-          const styleObject = convertTwToJs(existingValue);
-          if (styleObject == null) {
-            return;
-          }
-
-          keyName = `$${++count}`;
-          styleMap[keyName] = styleObject;
-          cnMap[existingValue] = keyName;
-        }
-
-        if (isHTML) {
-          path.replaceWith(
-            t.jsxSpreadAttribute(
-              t.callExpression(
-                t.memberExpression(stylex, t.identifier("props")),
-                [t.memberExpression(styles, t.identifier(keyName))]
-              )
-            )
-          );
-        } else {
-          valuePath.replaceWith(
-            t.jsxExpressionContainer(
-              t.memberExpression(styles, t.identifier(keyName))
-            )
-          );
-        }
-      },
-      CallExpression(path: NodePath<t.CallExpression>) {
-        if (!isCallExpressionNamed(path, ["tw"])) {
-          return;
-        }
-        const transformedArgs = path.get('arguments').map(pathToStyleX);
-        path.replaceWith(
-          t.arrayExpression(
-            transformedArgs
-          )
-        );
       },
     },
   };
