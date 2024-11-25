@@ -34,7 +34,74 @@ describe("tailwind-to-stylex small examples", () => {
     `);
   });
 
-  test("transforms simple example", async () => {
+  test("transforms example from Tailwind website", async () => {
+    const input = `
+      function Component() {
+        return <button className="px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2">Message</button>;
+      }
+    `;
+    const result = await tailwindToStylex(input);
+    expect(result).toMatchInlineSnapshot(`
+     "import * as _stylex from "@stylexjs/stylex";
+     function Component() {
+       return <button {..._stylex.props(_styles.$1)}>Message</button>;
+     }
+     const _styles = _stylex.create({
+       $1: {
+         paddingBlock: ".25rem",
+         paddingInline: "1rem",
+         borderRadius: "3.40282e38px",
+         borderStyle: "var(--tw-border-style)",
+         borderWidth: "1px",
+         borderColor: {
+           default: "#e9d5ff",
+           ":hover": "#0000"
+         },
+         fontSize: ".875rem",
+         lineHeight: "1.25rem",
+         fontWeight: "600",
+         color: {
+           default: "#9333ea",
+           ":hover": "#fff"
+         },
+         backgroundColor: {
+           default: null,
+           ":hover": "#9333ea"
+         },
+         "--tw-ring-shadow": {
+           default: null,
+           ":focus": "var(--tw-ring-inset, ) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentColor)"
+         },
+         boxShadow: {
+           default: null,
+           ":focus": "var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow)"
+         },
+         "--tw-ring-color": {
+           default: null,
+           ":focus": "#9333ea"
+         },
+         "--tw-ring-offset-width": {
+           default: null,
+           ":focus": "2px"
+         },
+         "--tw-ring-offset-shadow": {
+           default: null,
+           ":focus": "var(--tw-ring-inset, ) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color)"
+         },
+         outlineOffset: {
+           default: null,
+           ":focus": "2px"
+         },
+         outline: {
+           default: null,
+           ":focus": "2px solid #0000"
+         }
+       }
+     });"
+    `);
+  });
+
+  test("transforms slightly more involved example", async () => {
     const input = `
     function Component() {
       return <div className="relative w-full justify-start text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" />

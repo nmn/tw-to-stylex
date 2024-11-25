@@ -29,6 +29,35 @@ describe("tailwind-to-stylex converting individual classnames", () => {
     };
   });
 
+  test("example from react conf website", () => {
+    const input =
+      "h-[180px] w-[320px] select-none object-cover md:h-[180px] md:w-[320px]";
+    expect(convert(input)).toMatchInlineSnapshot(`
+     {
+       "WebkitUserSelect": "none",
+       "height": {
+         "@media (width >= 48rem)": "180px",
+         "default": "180px",
+       },
+       "objectFit": "cover",
+       "userSelect": "none",
+       "width": {
+         "@media (width >= 48rem)": "320px",
+         "default": "320px",
+       },
+     }
+    `);
+  });
+  test("example from tailwind website", () => {
+    expect(convert("p-4 bg-gray-100 text-gray-800")).toMatchInlineSnapshot(`
+     {
+       "backgroundColor": "#f3f4f6",
+       "color": "#1f2937",
+       "padding": "1rem",
+     }
+    `);
+  });
+
   test("converts simple classnames", () => {
     expect(convert("p-4 bg-gray-100 text-gray-800")).toMatchInlineSnapshot(`
      {
@@ -69,7 +98,7 @@ describe("tailwind-to-stylex converting individual classnames", () => {
      }
     `);
     expect(
-      convert("absolute top-0 left-0 h-full w-full bg-opacity-50 bg-black")
+      convert("absolute top-0 left-0 h-full w-full bg-opacity-50 bg-black"),
     ).toMatchInlineSnapshot(`
      {
        "backgroundColor": "#000",
@@ -197,7 +226,7 @@ describe("tailwind-to-stylex converting individual classnames", () => {
      }
     `);
     expect(
-      convert("inline-block bg-green-500 text-white py-1 px-3 rounded-full")
+      convert("inline-block bg-green-500 text-white py-1 px-3 rounded-full"),
     ).toMatchInlineSnapshot(`
      {
        "backgroundColor": "#22c55e",
@@ -267,8 +296,8 @@ describe("tailwind-to-stylex converting individual classnames", () => {
     `);
     expect(
       convert(
-        "h-10 w-10 bg-gray-200 flex items-center justify-center rounded-full"
-      )
+        "h-10 w-10 bg-gray-200 flex items-center justify-center rounded-full",
+      ),
     ).toMatchInlineSnapshot(`
      {
        "alignItems": "center",
@@ -580,15 +609,15 @@ describe("tailwind-to-stylex converting individual classnames", () => {
      }
     `);
     expect(
-      convert("hover:bg-opacity-80 active:bg-opacity-60")
+      convert("hover:bg-opacity-80 active:bg-opacity-60"),
     ).toMatchInlineSnapshot(`{}`);
   });
 
   test("converts more complex classnames", () => {
     expect(
       convert(
-        "bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white"
-      )
+        "bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white",
+      ),
     ).toMatchInlineSnapshot(`
      {
        "--tw-gradient-from": "#6366f1",
@@ -610,8 +639,8 @@ describe("tailwind-to-stylex converting individual classnames", () => {
     `);
     expect(
       convert(
-        "md:hover:shadow-2xl md:hover:scale-105 transition-all duration-500"
-      )
+        "md:hover:shadow-2xl md:hover:scale-105 transition-all duration-500",
+      ),
     ).toMatchInlineSnapshot(`
      {
        "transitionDuration": ".5s",
@@ -655,8 +684,8 @@ describe("tailwind-to-stylex converting individual classnames", () => {
     expect(convert("aspect-w-16 aspect-h-9")).toMatchInlineSnapshot(`{}`);
     expect(
       convert(
-        "lg:shadow-inner lg:bg-gradient-to-t from-yellow-300 to-orange-600"
-      )
+        "lg:shadow-inner lg:bg-gradient-to-t from-yellow-300 to-orange-600",
+      ),
     ).toMatchInlineSnapshot(`
      {
        "--tw-gradient-from": "#fde047",
@@ -681,7 +710,7 @@ describe("tailwind-to-stylex converting individual classnames", () => {
      }
     `);
     expect(
-      convert("motion-safe:transition-transform motion-reduce:animate-none")
+      convert("motion-safe:transition-transform motion-reduce:animate-none"),
     ).toMatchInlineSnapshot(`
      {
        "animation": {
@@ -722,8 +751,8 @@ describe("tailwind-to-stylex converting individual classnames", () => {
     `);
     expect(
       convert(
-        "bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-600"
-      )
+        "bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-600",
+      ),
     ).toMatchInlineSnapshot(`
      {
        "--tw-gradient-from": "#4ade80",
@@ -759,7 +788,7 @@ describe("tailwind-to-stylex converting individual classnames", () => {
      }
     `);
     expect(
-      convert("ring-offset-4 ring-indigo-300 focus:ring-offset-indigo-500")
+      convert("ring-offset-4 ring-indigo-300 focus:ring-offset-indigo-500"),
     ).toMatchInlineSnapshot(`
      {
        "--tw-ring-color": "#a5b4fc",
@@ -818,12 +847,12 @@ describe("tailwind-to-stylex converting individual classnames", () => {
      }
     `);
     expect(
-      convert("sm:focus-within:shadow-lg sm:focus-within:border-blue-500")
+      convert("sm:focus-within:shadow-lg sm:focus-within:border-blue-500"),
     ).toMatchInlineSnapshot(`{}`);
     expect(
       convert(
-        "container:sm:grid container:sm:grid-cols-3 container:md:flex container:lg:block"
-      )
+        "container:sm:grid container:sm:grid-cols-3 container:md:flex container:lg:block",
+      ),
     ).toMatchInlineSnapshot(`{}`);
     expect(convert("lg:shadow-outline lg:shadow-md")).toMatchInlineSnapshot(`
      {
@@ -859,7 +888,7 @@ describe("tailwind-to-stylex converting individual classnames", () => {
      }
     `);
     expect(
-      convert("bg-gradient-conic from-blue-400 via-purple-500 to-pink-600")
+      convert("bg-gradient-conic from-blue-400 via-purple-500 to-pink-600"),
     ).toMatchInlineSnapshot(`
      {
        "--tw-gradient-from": "#60a5fa",
@@ -1011,15 +1040,15 @@ describe("tailwind-to-stylex converting individual classnames", () => {
      }
     `);
     expect(
-      convert("child:bg-red-400 child:m-4 child:flex child:h-16")
+      convert("child:bg-red-400 child:m-4 child:flex child:h-16"),
     ).toMatchInlineSnapshot(`{}`);
     expect(
-      convert("only:child:border-2 only:child:border-gray-500")
+      convert("only:child:border-2 only:child:border-gray-500"),
     ).toMatchInlineSnapshot(`{}`);
     expect(
       convert(
-        "hover:before:bg-gradient-to-t hover:before:from-green-400 hover:before:to-blue-400"
-      )
+        "hover:before:bg-gradient-to-t hover:before:from-green-400 hover:before:to-blue-400",
+      ),
     ).toMatchInlineSnapshot(`{}`);
     expect(convert("animate-bounce delay-200 motion-safe:animate-none"))
       .toMatchInlineSnapshot(`
@@ -1032,16 +1061,16 @@ describe("tailwind-to-stylex converting individual classnames", () => {
      }
     `);
     expect(
-      convert("aria-checked:bg-blue-600 aria-disabled:opacity-50")
+      convert("aria-checked:bg-blue-600 aria-disabled:opacity-50"),
     ).toMatchInlineSnapshot(`{}`);
     expect(
-      convert("@supports:bg-blend-multiply blend-multiply")
+      convert("@supports:bg-blend-multiply blend-multiply"),
     ).toMatchInlineSnapshot(`{}`);
     expect(
-      convert("sm:text-opacity-75 md:text-opacity-50 lg:text-opacity-25")
+      convert("sm:text-opacity-75 md:text-opacity-50 lg:text-opacity-25"),
     ).toMatchInlineSnapshot(`{}`);
     expect(
-      convert("outline-4 outline-offset-8 outline-dashed outline-gray-700")
+      convert("outline-4 outline-offset-8 outline-dashed outline-gray-700"),
     ).toMatchInlineSnapshot(`
      {
        "--tw-outline-style": "dashed",
@@ -1073,7 +1102,7 @@ describe("tailwind-to-stylex converting individual classnames", () => {
      }
     `);
     expect(
-      convert("marker:text-pink-500 marker:font-extrabold")
+      convert("marker:text-pink-500 marker:font-extrabold"),
     ).toMatchInlineSnapshot(`{}`);
     expect(convert("select-none hover:select-auto")).toMatchInlineSnapshot(`
      {
@@ -1218,7 +1247,7 @@ describe("tailwind-to-stylex converting individual classnames", () => {
      }
     `);
     expect(
-      convert("md:hover:translate-x-2 lg:hover:translate-y-2")
+      convert("md:hover:translate-x-2 lg:hover:translate-y-2"),
     ).toMatchInlineSnapshot(`{}`);
     expect(convert("peer-focus:border-blue-500 peer-invalid:border-red-500"))
       .toMatchInlineSnapshot(`
@@ -1231,7 +1260,7 @@ describe("tailwind-to-stylex converting individual classnames", () => {
      }
     `);
     expect(
-      convert("dark:group-hover:text-white dark:group-active:text-gray-300")
+      convert("dark:group-hover:text-white dark:group-active:text-gray-300"),
     ).toMatchInlineSnapshot(`
      {
        "color": {
